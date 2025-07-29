@@ -62,6 +62,24 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 24 * SCALE,
   },
+  descriptionContainer: {
+    paddingHorizontal: 24 * SCALE,
+    marginBottom: 24 * SCALE,
+  },
+  descriptionTitle: {
+    fontFamily: 'Inter',
+    fontSize: 18 * SCALE,
+    color: '#000',
+    fontWeight: 'bold',
+    marginBottom: 8 * SCALE,
+  },
+  descriptionText: {
+    fontFamily: 'Inter',
+    fontSize: 14 * SCALE,
+    color: '#717171',
+    fontWeight: '400',
+    lineHeight: 20 * SCALE,
+  },
   statsRowTop: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -75,17 +93,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: '100%',
     marginBottom: 24 * SCALE,
-  },
-  statCard: {
-    borderRadius: 15 * SCALE,
-    alignItems: 'center',
-    paddingVertical: 16 * SCALE,
-    paddingHorizontal: 8 * SCALE,
-    marginHorizontal: 4 * SCALE,
-    shadowColor: '#000',
-    shadowOpacity: 0.04,
-    shadowRadius: 4,
-    elevation: 2,
   },
   statCardSquare: {
     width: 150 * SCALE,
@@ -106,42 +113,6 @@ const styles = StyleSheet.create({
     paddingVertical: 16 * SCALE,
     paddingHorizontal: 8 * SCALE,
     elevation: 2,
-  },
-  statIconCircle: {
-    width: 40 * SCALE,
-    height: 40 * SCALE,
-    borderRadius: 20 * SCALE,
-    backgroundColor: '#FFF',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 8 * SCALE,
-  },
-  statIcon: {
-    width: 24 * SCALE,
-    height: 24 * SCALE,
-  },
-  statLabel: {
-    fontFamily: 'Inter',
-    fontSize: 11 * SCALE,
-    color: '#717171',
-    fontWeight: '400',
-    marginBottom: 2 * SCALE,
-    textAlign: 'center',
-  },
-  statValue: {
-    fontFamily: 'Inter',
-    fontSize: 22 * SCALE,
-    color: '#717171',
-    fontWeight: '600',
-    marginBottom: 2 * SCALE,
-    textAlign: 'center',
-  },
-  statSoil: {
-    fontFamily: 'Inter',
-    fontSize: 14 * SCALE,
-    color: '#717171',
-    fontWeight: '600',
-    textAlign: 'center',
   },
   squareIconRow: {
     width: '100%',
@@ -219,113 +190,57 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     textAlign: 'right',
   },
-
-  // Nouveaux styles pour la search bar et les cards de plantes
-  searchContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#f5f5f5',
-    borderRadius: 25 * SCALE,
-    paddingHorizontal: 16 * SCALE,
-    paddingVertical: 12 * SCALE,
-    marginHorizontal: 24 * SCALE,
-    marginBottom: 20 * SCALE,
-  },
-
-  searchIcon: {
-    width: 20 * SCALE,
-    height: 20 * SCALE,
-    marginRight: 10 * SCALE,
-    tintColor: '#717171',
-  },
-
-  searchInput: {
-    flex: 1,
-    fontSize: 16 * SCALE,
-    color: '#333',
-    fontFamily: 'Inter',
-  },
-
-  plantList: {
+  careContainer: {
     paddingHorizontal: 24 * SCALE,
-    paddingBottom: 20 * SCALE,
+    marginBottom: 40 * SCALE,
   },
-
-  plantGrid: {
-    justifyContent: 'space-between',
-    marginBottom: 16 * SCALE,
-  },
-
-  plantCard: {
-    width: '48%',
-    backgroundColor: '#fff',
-    borderRadius: 16 * SCALE,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 3,
-    overflow: 'hidden',
-    marginBottom: 16 * SCALE,
-  },
-
-  plantCardImageContainer: {
-    width: '100%',
-    height: 120 * SCALE,
-    borderTopLeftRadius: 16 * SCALE,
-    borderTopRightRadius: 16 * SCALE,
-    overflow: 'hidden',
-  },
-
-  plantCardImage: {
-    width: '100%',
-    height: '100%',
-  },
-
-  plantCardContent: {
-    padding: 12 * SCALE,
-  },
-
-  plantCardTitle: {
-    fontSize: 16 * SCALE,
+  careTitle: {
+    fontFamily: 'Inter',
+    fontSize: 18 * SCALE,
+    color: '#000',
     fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 4 * SCALE,
-    fontFamily: 'Inter',
-  },
-
-  plantCardSubtitle: {
-    fontSize: 12 * SCALE,
-    color: '#717171',
     marginBottom: 8 * SCALE,
+  },
+  careText: {
     fontFamily: 'Inter',
+    fontSize: 14 * SCALE,
+    color: '#717171',
+    fontWeight: '400',
+    lineHeight: 20 * SCALE,
   },
-
-  plantCardStats: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+  errorText: {
+    fontFamily: 'Inter',
+    fontSize: 16 * SCALE,
+    color: '#717171',
+    textAlign: 'center',
+    marginTop: 100 * SCALE,
   },
-
-  plantCardStatItem: {
-    flexDirection: 'row',
+  ctaContainer: {
+    paddingHorizontal: 24 * SCALE,
+    marginBottom: 40 * SCALE,
+    marginTop: 20 * SCALE,
+  },
+  ctaButton: {
+    backgroundColor: '#26CB66',
+    borderRadius: 25 * SCALE,
+    paddingVertical: 16 * SCALE,
+    paddingHorizontal: 32 * SCALE,
     alignItems: 'center',
-    flex: 1,
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 8,
+    elevation: 4,
   },
-
-  plantCardStatIcon: {
-    width: 16 * SCALE,
-    height: 16 * SCALE,
-    marginRight: 4 * SCALE,
-    tintColor: '#26CB66',
-  },
-
-  plantCardStatText: {
-    fontSize: 11 * SCALE,
-    color: '#26CB66',
-    fontWeight: '600',
+  ctaButtonText: {
     fontFamily: 'Inter',
+    fontSize: 16 * SCALE,
+    color: '#fff',
+    fontWeight: 'bold',
+    textTransform: 'uppercase',
+    letterSpacing: 1,
   },
-
 });
 
-export default styles;
+export default styles; 

@@ -96,12 +96,12 @@ export default function DashboardScreen() {
       {/* Deux images avec titre en dessous */}
       <View style={styles.imagesRow}>
 
-        <TouchableOpacity style={styles.imageCol} onPress={() => router.push('/(tabs)/Product')}>
+        <TouchableOpacity style={styles.imageCol} onPress={() => router.navigate('DashboardPlantDetail/strawberry-1' as any)}>
           <Image source={require('../../assets/images/Fraises.png')} style={styles.plantImage} resizeMode="cover" />
           <Text style={styles.plantImageTitle}>Strawberry</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.imageCol} onPress={() => router.push('/(tabs)/Product')}>
+        <TouchableOpacity style={styles.imageCol} onPress={() => router.navigate('DashboardPlantDetail/strawberry-2' as any)}>
           <Image source={require('../../assets/images/Fraises.png')} style={styles.plantImage} resizeMode="cover" />
           <Text style={styles.plantImageTitle}>Strawberry</Text>
         </TouchableOpacity>
