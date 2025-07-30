@@ -3,7 +3,6 @@ name: Back CI
 on:
   push:
     branches:
-      - dev/back
       - develop
       - main
     paths:
