@@ -35,8 +35,3 @@ jobs:
         if: steps.check_front.outputs.exists == 'true'
         working-directory: my-app
         run: npm run typecheck
-
-      - name: Build frontend
-        if: steps.check_front.outputs.exists == 'true'
-        working-directory: my-app
-        run: npm run build
