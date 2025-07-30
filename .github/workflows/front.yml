@@ -1,0 +1,47 @@
+name: Front CI
+
+on:
+  push:
+    branches: [develop, main]
+  pull_request:
+
+jobs:
+  build:
+    name: Build Frontend
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Check if my-app exists
+        id: check_front
+        run: |
+          if [ -d "my-app" ]; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "my-app/ does not exist. Skipping frontend steps."
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Install dependencies
+        if: steps.check_front.outputs.exists == 'true'
+        working-directory: my-app
+        run: npm ci
+
+      - name: Lint frontend
+        if: steps.check_front.outputs.exists == 'true'
+        working-directory: my-app
+        run: npm run lint
+
+      - name: Type check frontend
+        if: steps.check_front.outputs.exists == 'true'
+        working-directory: my-app
+        run: npm run typecheck
+
+      - name: Build frontend
+        if: steps.check_front.outputs.exists == 'true'
+        working-directory: my-app
+        run: npm run build
