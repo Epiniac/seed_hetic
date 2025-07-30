@@ -1,0 +1,331 @@
+import { StyleSheet, Dimensions } from 'react-native';
+
+const { width } = Dimensions.get('window');
+const IPHONE_16_WIDTH = 430; // iPhone 16 Pro Max width in pt
+const SCALE = width / IPHONE_16_WIDTH;
+
+const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+    backgroundColor: '#FEFBFB',
+    paddingTop: 60 * SCALE,
+  },
+  headerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: '100%',
+    paddingHorizontal: 24 * SCALE,
+    marginBottom: 32 * SCALE,
+  },
+  headerIcon: {
+    width: 35 * SCALE,
+    height: 35 * SCALE,
+  },
+  headerTitle: {
+    flex: 1,
+    textAlign: 'center',
+    fontFamily: 'Inter',
+    fontSize: 20 * SCALE,
+    color: '#000',
+    fontWeight: 'bold',
+  },
+  plantImageContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 180 * SCALE,
+    height: 180 * SCALE,
+    borderRadius: 90 * SCALE,
+    backgroundColor: '#fff',
+    alignSelf: 'center',
+    overflow: 'hidden',
+    marginBottom: 18 * SCALE,
+  },
+  plantImage: {
+    width: 180 * SCALE,
+    height: 180 * SCALE,
+    borderRadius: 90 * SCALE,
+  },
+  plantTitle: {
+    fontFamily: 'Inter',
+    fontSize: 20 * SCALE,
+    color: '#000',
+    fontWeight: '400',
+    textAlign: 'center',
+    marginBottom: 2 * SCALE,
+  },
+  plantSubtitle: {
+    fontFamily: 'Inter',
+    fontSize: 12 * SCALE,
+    color: '#717171',
+    fontWeight: '400',
+    textAlign: 'center',
+    marginBottom: 24 * SCALE,
+  },
+  statsRowTop: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    width: '100%',
+    paddingHorizontal: 48 * SCALE,
+    marginBottom: 16 * SCALE,
+  },
+  statsRowBottom: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    width: '100%',
+    marginBottom: 24 * SCALE,
+  },
+  statCard: {
+    borderRadius: 15 * SCALE,
+    alignItems: 'center',
+    paddingVertical: 16 * SCALE,
+    paddingHorizontal: 8 * SCALE,
+    marginHorizontal: 4 * SCALE,
+    shadowColor: '#000',
+    shadowOpacity: 0.04,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  statCardSquare: {
+    width: 150 * SCALE,
+    height: 150 * SCALE,
+    borderRadius: 10 * SCALE,
+    alignItems: 'center',
+    paddingVertical: 16 * SCALE,
+    paddingHorizontal: 8 * SCALE,
+    marginHorizontal: 8 * SCALE,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  statCardRect: {
+    width: 320 * SCALE,
+    height: 110 * SCALE,
+    borderRadius: 10 * SCALE,
+    alignItems: 'center',
+    paddingVertical: 16 * SCALE,
+    paddingHorizontal: 8 * SCALE,
+    elevation: 2,
+  },
+  statIconCircle: {
+    width: 40 * SCALE,
+    height: 40 * SCALE,
+    borderRadius: 20 * SCALE,
+    backgroundColor: '#FFF',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 8 * SCALE,
+  },
+  statIcon: {
+    width: 24 * SCALE,
+    height: 24 * SCALE,
+  },
+  statLabel: {
+    fontFamily: 'Inter',
+    fontSize: 11 * SCALE,
+    color: '#717171',
+    fontWeight: '400',
+    marginBottom: 2 * SCALE,
+    textAlign: 'center',
+  },
+  statValue: {
+    fontFamily: 'Inter',
+    fontSize: 22 * SCALE,
+    color: '#717171',
+    fontWeight: '600',
+    marginBottom: 2 * SCALE,
+    textAlign: 'center',
+  },
+  statSoil: {
+    fontFamily: 'Inter',
+    fontSize: 14 * SCALE,
+    color: '#717171',
+    fontWeight: '600',
+    textAlign: 'center',
+  },
+  squareIconRow: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    marginBottom: 8 * SCALE,
+    marginTop: 8 * SCALE,
+    paddingLeft: 8 * SCALE,
+  },
+  squareIcon: {
+    width: 40 * SCALE,
+    height: 40 * SCALE,
+  },
+  squareLabel: {
+    fontFamily: 'Inter',
+    fontSize: 13 * SCALE,
+    color: '#717171',
+    fontWeight: '400',
+    marginBottom: 2 * SCALE,
+    textAlign: 'left',
+    width: '100%',
+    paddingLeft: 8 * SCALE,
+  },
+  squareValue: {
+    fontFamily: 'Inter',
+    fontSize: 20 * SCALE,
+    color: '#717171',
+    fontWeight: '600',
+    textAlign: 'left',
+    width: '100%',
+    paddingLeft: 8 * SCALE,
+  },
+  rectContentRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '100%',
+    height: '100%',
+    paddingHorizontal: 12 * SCALE,
+    paddingVertical: 8 * SCALE,
+  },
+  rectIcon: {
+    width: 40 * SCALE,
+    height: 40 * SCALE,
+    marginRight: 12 * SCALE,
+  },
+  rectTextCol: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+  },
+  rectTitle: {
+    fontFamily: 'Inter',
+    fontSize: 18 * SCALE,
+    color: '#717171',
+    fontWeight: '600',
+    textAlign: 'left',
+  },
+  rectSubtitle: {
+    fontFamily: 'Inter',
+    fontSize: 13 * SCALE,
+    color: '#717171',
+    fontWeight: '400',
+    textAlign: 'left',
+  },
+  rectValueCol: {
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+    minWidth: 60 * SCALE,
+  },
+  rectValue: {
+    fontFamily: 'Inter',
+    fontSize: 22 * SCALE,
+    color: '#717171',
+    fontWeight: '600',
+    textAlign: 'right',
+  },
+
+  // Nouveaux styles pour la search bar et les cards de plantes
+  searchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#f5f5f5',
+    borderRadius: 25 * SCALE,
+    paddingHorizontal: 16 * SCALE,
+    paddingVertical: 12 * SCALE,
+    marginHorizontal: 24 * SCALE,
+    marginBottom: 20 * SCALE,
+  },
+
+  searchIcon: {
+    width: 20 * SCALE,
+    height: 20 * SCALE,
+    marginRight: 10 * SCALE,
+    tintColor: '#717171',
+  },
+
+  searchInput: {
+    flex: 1,
+    fontSize: 16 * SCALE,
+    color: '#333',
+    fontFamily: 'Inter',
+  },
+
+  plantList: {
+    paddingHorizontal: 24 * SCALE,
+    paddingBottom: 20 * SCALE,
+  },
+
+  plantGrid: {
+    justifyContent: 'space-between',
+    marginBottom: 16 * SCALE,
+  },
+
+  plantCard: {
+    width: '48%',
+    backgroundColor: '#fff',
+    borderRadius: 16 * SCALE,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 3,
+    overflow: 'hidden',
+    marginBottom: 16 * SCALE,
+  },
+
+  plantCardImageContainer: {
+    width: '100%',
+    height: 120 * SCALE,
+    borderTopLeftRadius: 16 * SCALE,
+    borderTopRightRadius: 16 * SCALE,
+    overflow: 'hidden',
+  },
+
+  plantCardImage: {
+    width: '100%',
+    height: '100%',
+  },
+
+  plantCardContent: {
+    padding: 12 * SCALE,
+  },
+
+  plantCardTitle: {
+    fontSize: 16 * SCALE,
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 4 * SCALE,
+    fontFamily: 'Inter',
+  },
+
+  plantCardSubtitle: {
+    fontSize: 12 * SCALE,
+    color: '#717171',
+    marginBottom: 8 * SCALE,
+    fontFamily: 'Inter',
+  },
+
+  plantCardStats: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+
+  plantCardStatItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+
+  plantCardStatIcon: {
+    width: 16 * SCALE,
+    height: 16 * SCALE,
+    marginRight: 4 * SCALE,
+    tintColor: '#26CB66',
+  },
+
+  plantCardStatText: {
+    fontSize: 11 * SCALE,
+    color: '#26CB66',
+    fontWeight: '600',
+    fontFamily: 'Inter',
+  },
+
+});
+
+export default styles;
