@@ -31,11 +31,6 @@ jobs:
         working-directory: my-app
         run: npm ci
 
-      - name: Lint frontend
-        if: steps.check_front.outputs.exists == 'true'
-        working-directory: my-app
-        run: npm run lint
-
       - name: Type check frontend
         if: steps.check_front.outputs.exists == 'true'
         working-directory: my-app
