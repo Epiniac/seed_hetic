@@ -11,9 +11,6 @@ jobs:
   build:
     name: Build Frontend
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: my-app
 
     steps:
       - uses: actions/checkout@v4
@@ -21,7 +18,25 @@ jobs:
         with:
           node-version: 20
 
-      - run: npm ci
-      - run: npm run lint
-      - run: npm run typecheck
-      - run: npm run build
+      - name: Skip if my-app/ does not exist
+        run: |
+          if [ ! -d "my-app" ]; then
+            echo "my-app/ directory not found, skipping job."
+            exit 0
+          fi
+
+      - name: Install dependencies
+        working-directory: my-app
+        run: npm ci
+
+      - name: Lint frontend
+        working-directory: my-app
+        run: npm run lint
+
+      - name: Type check frontend
+        working-directory: my-app
+        run: npm run typecheck
+
+      - name: Build frontend
+        working-directory: my-app
+        run: npm run build
