@@ -11,9 +11,6 @@ jobs:
   test:
     name: Build Backend
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: server
 
     steps:
       - uses: actions/checkout@v4
@@ -21,6 +18,22 @@ jobs:
         with:
           node-version: 20
 
-      - run: npm ci
-      - run: npm run lint
-      - run: npm test
+      - name: Skip if server/ does not exist
+        run: |
+          if [ ! -d "server" ]; then
+            echo "server/ directory not found, skipping job."
+            exit 0
+          fi
+
+      - name: Install dependencies
+        working-directory: server
+        run: npm ci
+
+      - name: Lint backend
+        working-directory: server
+        run: npm run lint
+
+      - name: Run tests
+        working-directory: server
+        run: npm test
+
