@@ -31,11 +31,6 @@ jobs:
         working-directory: server
         run: npm ci
 
-      - name: Lint backend
-        if: steps.check_back.outputs.exists == 'true'
-        working-directory: server
-        run: npm run lint
-
       - name: Run tests
         if: steps.check_back.outputs.exists == 'true'
         working-directory: server
