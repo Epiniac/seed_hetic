@@ -2,10 +2,13 @@ import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, Image, TextInput, TouchableOpacity, Animated, Dimensions } from 'react-native';
 import { useRouter } from 'expo-router';
 import styles from '../styles/Dashboard.styles';
+import PlantSearch from '../../components/PlantSearch';
+import { PlantSpecies } from '../../services/perenualApi';
 
 export default function DashboardScreen() {
   const [search, setSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('house');
+  const [selectedPlant, setSelectedPlant] = useState<PlantSpecies | null>(null);
   const router = useRouter();
 
   // Animation pour la barre verte
@@ -28,6 +31,13 @@ export default function DashboardScreen() {
     }).start();
   }, [selectedCategory]);
 
+  // Gestionnaire de sélection de plante
+  const handlePlantSelection = (plant: PlantSpecies) => {
+    setSelectedPlant(plant);
+    console.log('Plante sélectionnée:', plant);
+    // Tu peux ici naviguer vers une page de détails ou faire autre chose
+  };
+
   return (
     <View style={styles.container}>
       {/* Header personnalisé */}
@@ -43,17 +53,7 @@ export default function DashboardScreen() {
       </View>
 
       {/* Barre de recherche sous le header */}
-      <View style={styles.searchBarRow}>
-        <Image source={require('../../assets/images/Search.png')} style={styles.searchIcon} resizeMode="contain" />
-        <TextInput
-          style={styles.searchInputFake}
-          placeholder="Search"
-          placeholderTextColor="#888"
-          value={search}
-          onChangeText={setSearch}
-        />
-        {/* <Image source={require('../../assets/images/Microo.png')} style={styles.microIcon} resizeMode="contain" /> */}
-      </View>
+      <PlantSearch onPlantSelect={handlePlantSelection} />
 
       {/* Carte Maceta sous la SearchBar */}
       <View style={styles.macetaCard}>

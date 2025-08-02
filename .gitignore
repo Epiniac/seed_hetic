@@ -39,3 +39,6 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
+
+# Personal files
+*.MQTT-BROKER-RASPBERRY.md
