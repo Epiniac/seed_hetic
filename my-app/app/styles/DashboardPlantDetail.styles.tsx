@@ -1,0 +1,262 @@
+import { StyleSheet, Dimensions } from 'react-native';
+
+const { width } = Dimensions.get('window');
+const IPHONE_16_WIDTH = 430; // iPhone 16 Pro Max width in pt
+const SCALE = width / IPHONE_16_WIDTH;
+
+const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+    backgroundColor: '#FEFBFB',
+    paddingTop: 60 * SCALE,
+  },
+  headerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: '100%',
+    paddingHorizontal: 24 * SCALE,
+    marginBottom: 24 * SCALE,
+  },
+  headerIcon: {
+    width: 35 * SCALE,
+    height: 35 * SCALE,
+  },
+  headerCenter: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  headerTitle: {
+    fontFamily: 'Inter',
+    fontSize: 18 * SCALE,
+    color: '#000',
+    fontWeight: 'bold',
+    marginBottom: 4 * SCALE,
+  },
+  statusBadge: {
+    paddingHorizontal: 12 * SCALE,
+    paddingVertical: 4 * SCALE,
+    borderRadius: 12 * SCALE,
+  },
+  statusText: {
+    fontFamily: 'Inter',
+    fontSize: 10 * SCALE,
+    color: '#fff',
+    fontWeight: '600',
+    textTransform: 'uppercase',
+  },
+  plantImageContainer: {
+    position: 'relative',
+    alignItems: 'center',
+    marginBottom: 24 * SCALE,
+  },
+  plantImage: {
+    width: 200 * SCALE,
+    height: 200 * SCALE,
+    borderRadius: 100 * SCALE,
+    backgroundColor: '#fff',
+  },
+  statusOverlay: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    paddingHorizontal: 8 * SCALE,
+    paddingVertical: 4 * SCALE,
+    borderRadius: 8 * SCALE,
+  },
+  statusOverlayText: {
+    fontFamily: 'Inter',
+    fontSize: 10 * SCALE,
+    fontWeight: '600',
+    textTransform: 'uppercase',
+  },
+  healthContainer: {
+    paddingHorizontal: 24 * SCALE,
+    marginBottom: 24 * SCALE,
+  },
+  healthTitle: {
+    fontFamily: 'Inter',
+    fontSize: 16 * SCALE,
+    color: '#000',
+    fontWeight: 'bold',
+    marginBottom: 12 * SCALE,
+  },
+  healthBarContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  healthBarBackground: {
+    flex: 1,
+    height: 8 * SCALE,
+    backgroundColor: '#E5E5E5',
+    borderRadius: 4 * SCALE,
+    marginRight: 12 * SCALE,
+    overflow: 'hidden',
+  },
+  healthBarFill: {
+    height: '100%',
+    borderRadius: 4 * SCALE,
+  },
+  healthScore: {
+    fontFamily: 'Inter',
+    fontSize: 16 * SCALE,
+    color: '#000',
+    fontWeight: 'bold',
+    minWidth: 40 * SCALE,
+  },
+  mainInfoContainer: {
+    paddingHorizontal: 24 * SCALE,
+    marginBottom: 24 * SCALE,
+  },
+  infoRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  infoItem: {
+    flex: 1,
+    alignItems: 'center',
+    paddingVertical: 16 * SCALE,
+    backgroundColor: '#fff',
+    borderRadius: 12 * SCALE,
+    marginHorizontal: 4 * SCALE,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  infoLabel: {
+    fontFamily: 'Inter',
+    fontSize: 12 * SCALE,
+    color: '#717171',
+    marginBottom: 4 * SCALE,
+  },
+  infoValue: {
+    fontFamily: 'Inter',
+    fontSize: 16 * SCALE,
+    color: '#000',
+    fontWeight: 'bold',
+  },
+  sensorsContainer: {
+    paddingHorizontal: 24 * SCALE,
+    marginBottom: 24 * SCALE,
+  },
+  sectionTitle: {
+    fontFamily: 'Inter',
+    fontSize: 18 * SCALE,
+    color: '#000',
+    fontWeight: 'bold',
+    marginBottom: 16 * SCALE,
+  },
+  sensorsGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
+  sensorCard: {
+    width: '48%',
+    backgroundColor: '#fff',
+    borderRadius: 12 * SCALE,
+    padding: 16 * SCALE,
+    marginBottom: 12 * SCALE,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  sensorIcon: {
+    width: 24 * SCALE,
+    height: 24 * SCALE,
+    marginBottom: 8 * SCALE,
+    tintColor: '#26CB66',
+  },
+  sensorLabel: {
+    fontFamily: 'Inter',
+    fontSize: 12 * SCALE,
+    color: '#717171',
+    marginBottom: 4 * SCALE,
+    textAlign: 'center',
+  },
+  sensorValue: {
+    fontFamily: 'Inter',
+    fontSize: 14 * SCALE,
+    color: '#000',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  wateringContainer: {
+    paddingHorizontal: 24 * SCALE,
+    marginBottom: 24 * SCALE,
+  },
+  wateringInfo: {
+    backgroundColor: '#fff',
+    borderRadius: 12 * SCALE,
+    padding: 16 * SCALE,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  wateringItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 8 * SCALE,
+  },
+  wateringLabel: {
+    fontFamily: 'Inter',
+    fontSize: 14 * SCALE,
+    color: '#717171',
+  },
+  wateringValue: {
+    fontFamily: 'Inter',
+    fontSize: 14 * SCALE,
+    color: '#000',
+    fontWeight: 'bold',
+  },
+  descriptionContainer: {
+    paddingHorizontal: 24 * SCALE,
+    marginBottom: 24 * SCALE,
+  },
+  descriptionText: {
+    fontFamily: 'Inter',
+    fontSize: 14 * SCALE,
+    color: '#717171',
+    lineHeight: 20 * SCALE,
+  },
+  recommendationsContainer: {
+    paddingHorizontal: 24 * SCALE,
+    marginBottom: 40 * SCALE,
+  },
+  recommendationItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 12 * SCALE,
+  },
+  recommendationDot: {
+    width: 8 * SCALE,
+    height: 8 * SCALE,
+    borderRadius: 4 * SCALE,
+    marginRight: 12 * SCALE,
+  },
+  recommendationText: {
+    fontFamily: 'Inter',
+    fontSize: 14 * SCALE,
+    color: '#717171',
+    flex: 1,
+    lineHeight: 20 * SCALE,
+  },
+  errorText: {
+    fontFamily: 'Inter',
+    fontSize: 16 * SCALE,
+    color: '#717171',
+    textAlign: 'center',
+    marginTop: 100 * SCALE,
+  },
+});
+
+export default styles; 
