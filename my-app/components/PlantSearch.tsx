@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   View,
   Text,
@@ -56,6 +56,9 @@ export default function PlantSearch({ onPlantSelect, style }: PlantSearchProps) 
   const [selectedPlant, setSelectedPlant] = useState<PlantDetails | null>(null);
   const [showDetails, setShowDetails] = useState(false);
   const [isLoadingDetails, setIsLoadingDetails] = useState(false);
+  
+  // Référence pour le TextInput
+  const searchInputRef = useRef<TextInput>(null);
   
   // États pour les favoris
   const [favoritesCount, setFavoritesCount] = useState(0);
@@ -385,22 +388,31 @@ export default function PlantSearch({ onPlantSelect, style }: PlantSearchProps) 
     <View style={[styles.container, style]}>
       {/* Barre de recherche */}
       <View style={styles.searchBarRow}>
-        <Image
-          source={require('../assets/images/Search.png')}
-          style={styles.searchIcon}
-          resizeMode="contain"
-        />
-        <TextInput
-          style={styles.searchInput}
-          placeholder="Rechercher une plante..."
-          placeholderTextColor="#888"
-          value={searchQuery}
-          onChangeText={setSearchQuery}
-          onFocus={() => setShowResults(true)}
-        />
+        <TouchableOpacity 
+          style={styles.searchInputContainer}
+          activeOpacity={1}
+          onPress={() => searchInputRef.current?.focus()}
+        >
+          <Image
+            source={require('../assets/images/Search.png')}
+            style={styles.searchIcon}
+            resizeMode="contain"
+          />
+          <TextInput
+            ref={searchInputRef}
+            style={styles.searchInput}
+            placeholder="Rechercher une plante..."
+            placeholderTextColor="#888"
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+            onFocus={() => setShowResults(true)}
+          />
+        </TouchableOpacity>
+        
         {isLoading && (
           <ActivityIndicator size="small" color="#26CB66" style={styles.loadingIcon} />
         )}
+        
         {/* Bouton favoris */}
         <TouchableOpacity
           style={styles.favoriteButton}

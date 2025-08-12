@@ -16,23 +16,59 @@ export const plantSearchStyles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#F5F5F5',
     borderRadius: 16,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
     marginHorizontal: 20,
     marginBottom: 8,
-    minHeight: 48, // Hauteur minimale pour faciliter le touch
+    ...Platform.select({
+      ios: {
+        minHeight: 64,
+        paddingHorizontal: 16,
+        paddingVertical: 16,
+      },
+      android: {
+        minHeight: 64,
+        paddingHorizontal: 16,
+        paddingVertical: 16,
+      },
+      web: {
+        minHeight: 48,
+        paddingHorizontal: 16,
+        paddingVertical: 12,
+      },
+    }),
   },
   searchIcon: {
     width: 24,
     height: 24,
     marginRight: 8,
   },
+  searchInputContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    minHeight: 40,
+  },
   searchInput: {
     flex: 1,
-    height: 40,
     fontSize: 16,
     color: '#333',
-    paddingVertical: 0, // Éviter le padding par défaut sur Android
+    backgroundColor: 'transparent', 
+    ...Platform.select({
+      ios: {
+        height: 48, 
+        paddingVertical: 12,
+        paddingHorizontal: 4,
+      },
+      android: {
+        height: 48, 
+        paddingVertical: 12,
+        paddingHorizontal: 4,
+      },
+      web: {
+        height: 40, 
+        paddingVertical: 0,
+        paddingHorizontal: 0,
+      },
+    }),
   },
   loadingIcon: {
     marginLeft: 8,
@@ -267,14 +303,30 @@ export const plantSearchStyles = StyleSheet.create({
     flex: 1,
   },
   favoriteButton: {
-    padding: 12, // Moins de padding
-    marginLeft: 4, // Moins de margin
     borderRadius: 8,
     backgroundColor: '#f8f8f8',
-    minWidth: 40, // Plus petit
-    minHeight: 40,
     justifyContent: 'center',
     alignItems: 'center',
+    ...Platform.select({
+      ios: {
+        padding: 10,
+        marginLeft: 12,
+        minWidth: 44,
+        minHeight: 44,
+      },
+      android: {
+        padding: 10,
+        marginLeft: 12,
+        minWidth: 44,
+        minHeight: 44,
+      },
+      web: {
+        padding: 12,
+        marginLeft: 4,
+        minWidth: 40,
+        minHeight: 40,
+      },
+    }),
   },
   favoriteButtonText: {
     fontSize: 18,

@@ -53,7 +53,7 @@ export default function DashboardScreen() {
       </View>
 
       {/* Barre de recherche sous le header */}
-      <PlantSearch onPlantSelect={handlePlantSelection} />
+      <PlantSearch onPlantSelect={handlePlantSelection} style={{ width: '100%' }} />
 
       {/* Carte Maceta sous la SearchBar */}
       <View style={styles.macetaCard}>
