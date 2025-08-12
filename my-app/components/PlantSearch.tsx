@@ -9,6 +9,7 @@ import {
   ActivityIndicator,
   Alert,
   Modal,
+  ScrollView,
 } from 'react-native';
 import { searchPlants, getPlantDetails, PlantSpecies, PlantDetails } from '../services/perenualApi';
 import { plantSearchStyles as styles } from '../app/styles/PlantSearch.styles';
@@ -224,44 +225,51 @@ export default function PlantSearch({ onPlantSelect, style }: PlantSearchProps) 
   // RENDU DES RÉSULTATS DE RECHERCHE
   // ========================================
 
-  const renderSearchResult = ({ item }: { item: SearchResult }) => (
-    <TouchableOpacity
-      style={styles.resultItem}
-      onPress={() => handlePlantPress(item)}
-    >
-      <View style={styles.resultRow}>
-        <View style={styles.imageContainer}>
-          {item.default_image?.thumbnail ? (
-            <Image
-              source={{ uri: item.default_image.thumbnail }}
-              style={styles.resultImage}
-              resizeMode="cover"
-              onError={() => console.log('Erreur de chargement image:', item.common_name)}
-              onLoad={() => console.log('Image chargée:', item.common_name)}
-            />
-          ) : (
-            <View style={styles.noImageContainer}>
-              <Text style={styles.noImageText}>🌱</Text>
-            </View>
-          )}
+  const renderSearchResult = ({ item }: { item: SearchResult }) => {
+    // Debug pour voir les données
+    console.log('Rendu plante:', item.common_name, item.scientific_name);
+    
+    return (
+      <TouchableOpacity
+        style={styles.resultItem}
+        onPress={() => handlePlantPress(item)}
+      >
+        <View style={styles.resultRow}>
+          <View style={styles.imageContainer}>
+            {item.default_image?.thumbnail ? (
+              <Image
+                source={{ uri: item.default_image.thumbnail }}
+                style={styles.resultImage}
+                resizeMode="cover"
+                onError={() => console.log('Erreur de chargement image:', item.common_name)}
+                onLoad={() => console.log('Image chargée:', item.common_name)}
+              />
+            ) : (
+              <View style={styles.noImageContainer}>
+                <Text style={styles.noImageText}>🌱</Text>
+              </View>
+            )}
+          </View>
+          <View style={styles.textContainer}>
+            <Text style={styles.resultTitle}>
+              {item.common_name || 'Nom inconnu'}
+            </Text>
+            <Text style={styles.resultScientific}>
+              {item.scientific_name?.[0] || 'Scientific name unavailable'}
+            </Text>
+          </View>
+          <TouchableOpacity
+            style={styles.favoriteButton}
+            onPress={() => handleToggleFavorite(item)}
+          >
+            <Text style={styles.favoriteButtonText}>
+              {resultsFavoriteStatus[item.id] ? '❤️' : '🤍'}
+            </Text>
+          </TouchableOpacity>
         </View>
-        <View style={styles.textContainer}>
-          <Text style={styles.resultTitle}>{item.common_name}</Text>
-          <Text style={styles.resultScientific}>
-            {item.scientific_name[0]}
-          </Text>
-        </View>
-        <TouchableOpacity
-          style={styles.favoriteButton}
-          onPress={() => handleToggleFavorite(item)}
-        >
-          <Text style={styles.favoriteButtonText}>
-            {resultsFavoriteStatus[item.id] ? '❤️' : '🤍'}
-          </Text>
-        </TouchableOpacity>
-      </View>
-    </TouchableOpacity>
-  );
+      </TouchableOpacity>
+    );
+  };
 
   // ========================================
   // MODAL DE DÉTAILS DE PLANTE
@@ -316,7 +324,11 @@ export default function PlantSearch({ onPlantSelect, style }: PlantSearchProps) 
               <Text style={styles.loadingText}>Chargement des détails...</Text>
             </View>
           ) : (
-            <View style={styles.detailsContent}>
+            <ScrollView 
+              style={styles.detailsContent}
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{ paddingBottom: 20 }}
+            >
               {selectedPlant.default_image && (
                 <Image
                   source={{ uri: selectedPlant.default_image.regular_url }}
@@ -358,7 +370,7 @@ export default function PlantSearch({ onPlantSelect, style }: PlantSearchProps) 
                   <Text style={styles.descriptionText}>{selectedPlant.description}</Text>
                 </View>
               )}
-            </View>
+            </ScrollView>
           )}
         </View>
       </Modal>

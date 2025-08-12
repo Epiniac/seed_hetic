@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 
 // ========================================
 // STYLES POUR PLANTSEARCH COMPONENT
@@ -16,10 +16,11 @@ export const plantSearchStyles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#F5F5F5',
     borderRadius: 16,
-    paddingHorizontal: 12,
-    paddingVertical: 8,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
     marginHorizontal: 20,
     marginBottom: 8,
+    minHeight: 48, // Hauteur minimale pour faciliter le touch
   },
   searchIcon: {
     width: 24,
@@ -28,9 +29,10 @@ export const plantSearchStyles = StyleSheet.create({
   },
   searchInput: {
     flex: 1,
-    height: 32,
+    height: 40,
     fontSize: 16,
     color: '#333',
+    paddingVertical: 0, // Éviter le padding par défaut sur Android
   },
   loadingIcon: {
     marginLeft: 8,
@@ -41,38 +43,45 @@ export const plantSearchStyles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 12,
     marginHorizontal: 20,
-    maxHeight: 300,
+    maxHeight: 350, // Plus de hauteur pour voir plus de résultats
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
     paddingVertical: 8,
+    borderWidth: 1,
+    borderColor: '#f0f0f0', // Bordure légère pour mieux voir le conteneur
+    overflow: 'visible', // S'assurer que le contenu est visible
   },
   resultsList: {
-    maxHeight: 280,
+    maxHeight: 320,
+    paddingHorizontal: 0, // Enlever le padding horizontal
   },
   resultItem: {
     backgroundColor: '#fff',
-    marginHorizontal: 8,
-    marginVertical: 4,
+    marginHorizontal: 12,
+    marginVertical: 6,
     borderRadius: 12,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.1,
     shadowRadius: 2,
     elevation: 2,
+    padding: 4,
   },
   resultRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 16,
+    padding: 12,
+    minHeight: 100, // PLUS de hauteur pour la ligne entière
+    backgroundColor: '#fff',
   },
   imageContainer: {
-    width: 60,
-    height: 60,
+    width: 50, // Plus petit pour laisser plus de place au texte
+    height: 50,
     borderRadius: 12,
-    marginRight: 16,
+    marginRight: 12, // Moins de margin
     overflow: 'hidden',
     backgroundColor: '#f8f8f8',
   },
@@ -94,19 +103,34 @@ export const plantSearchStyles = StyleSheet.create({
     textAlign: 'center',
   },
   textContainer: {
-    flex: 1,
+    ...Platform.select({
+      ios: {
+        width: 180,
+        height: 60,
+      },
+      android: {
+        width: 180,
+        height: 60,
+      },
+      web: {
+        flex: 1,
+      },
+    }),
+    paddingHorizontal: 8,
+    paddingVertical: 8,
+    marginRight: 8,
+    justifyContent: 'center',
   },
   resultTitle: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#1a1a1a',
-    marginBottom: 4,
+    color: '#333',
+    marginBottom: 2,
   },
   resultScientific: {
-    fontSize: 13,
+    fontSize: 12,
     color: '#666',
     fontStyle: 'italic',
-    lineHeight: 18,
   },
   noResults: {
     textAlign: 'center',
@@ -243,11 +267,14 @@ export const plantSearchStyles = StyleSheet.create({
     flex: 1,
   },
   favoriteButton: {
-    padding: 12,
-    marginLeft: 8,
-    position: 'relative',
+    padding: 12, // Moins de padding
+    marginLeft: 4, // Moins de margin
     borderRadius: 8,
     backgroundColor: '#f8f8f8',
+    minWidth: 40, // Plus petit
+    minHeight: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   favoriteButtonText: {
     fontSize: 18,
