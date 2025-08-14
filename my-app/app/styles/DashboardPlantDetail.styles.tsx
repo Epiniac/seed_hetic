@@ -22,6 +22,10 @@ const styles = StyleSheet.create({
     width: 35 * SCALE,
     height: 35 * SCALE,
   },
+  notificationIcon: {
+    width: 22 * SCALE,
+    height: 22 * SCALE,
+  },
   headerCenter: {
     flex: 1,
     alignItems: 'center',

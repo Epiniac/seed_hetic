@@ -21,30 +21,6 @@ const plantsData = [
     image: require('../../assets/images/Fraises.png'),
     daysToHarvest: '3 days'
   },
-  {
-    id: '3',
-    name: 'Flower Garden',
-    image: require('../../assets/images/Flower.png'),
-    daysToHarvest: '7 days'
-  },
-  {
-    id: '4',
-    name: 'Herb Garden',
-    image: require('../../assets/images/Maceta.jpg'),
-    daysToHarvest: '4 days'
-  },
-  {
-    id: '5',
-    name: 'Tomato Plant',
-    image: require('../../assets/images/Fraises.png'),
-    daysToHarvest: '6 days'
-  },
-  {
-    id: '6',
-    name: 'Basil Plant',
-    image: require('../../assets/images/Maceta.jpg'),
-    daysToHarvest: '2 days'
-  }
 ];
 
 export default function ProductScreen() {
@@ -90,7 +66,6 @@ export default function ProductScreen() {
           <Image source={require('../../assets/images/Return.png')} style={styles.headerIcon} resizeMode="contain" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Bibliothèque</Text>
-        <Image source={require('../../assets/images/Like.png')} style={styles.headerIcon} resizeMode="contain" />
       </View>
 
       {/* Search Bar */}

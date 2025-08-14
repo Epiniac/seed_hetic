@@ -131,7 +131,7 @@ export default function DashboardPlantDetailScreen() {
             <Text style={styles.statusText}>{plant.status}</Text>
           </View>
         </View>
-        <Image source={require('../../assets/images/Notification.jpg')} style={styles.headerIcon} resizeMode="contain" />
+        <Image source={require('../../assets/images/Notification.jpg')} style={styles.notificationIcon} resizeMode="contain" />
       </View>
 
       {/* Image de la plante avec overlay de statut */}
