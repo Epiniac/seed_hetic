@@ -28,7 +28,7 @@ export default function AuthenScreen() {
         Petit blabla pour faire comprendre à l’utilisateur qu’en se connectant, il aura accès à toutes ses plantes de n’importe où.
       </Text>
       {/* Button */}
-      <TouchableOpacity style={styles.button} onPress={() => router.push('/(tabs)/Connect')}>
+      <TouchableOpacity style={styles.button} onPress={() => router.push('/authen/connect')}>
         <Text style={styles.buttonText}>Se connecter</Text>
       </TouchableOpacity>
       {/* Bottom Bar (if needed) */}

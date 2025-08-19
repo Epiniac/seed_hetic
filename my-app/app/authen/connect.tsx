@@ -2,14 +2,27 @@ import React, { useState, useRef } from 'react';
 import { View, Text, Image, TextInput, TouchableOpacity, Animated, Easing } from 'react-native';
 import styles from '../styles/Connect.styles';
 import { router } from 'expo-router';
+import { useAuthActions } from '../../hooks/useAuthActions';
 
 const { width } = require('react-native').Dimensions.get('window');
-const IPHONE_16_WIDTH = 430; // iPhone 16 Pro Max width in pt
-const SCALE = width / IPHONE_16_WIDTH;
 
-export default function ConnectScreen() {
+export default function AuthConnectScreen() {
   const [activeTab, setActiveTab] = useState('login');
   const animValue = useRef(new Animated.Value(0)).current;
+  const { handleLogin, handleRegister, isLoading } = useAuthActions();
+  
+  // États pour les formulaires
+  const [loginForm, setLoginForm] = useState({
+    email: '',
+    password: ''
+  });
+  
+  const [registerForm, setRegisterForm] = useState({
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
+  });
 
   // Animation lors du changement d'onglet
   const switchTab = (tab: 'login' | 'signup') => {
@@ -32,6 +45,15 @@ export default function ConnectScreen() {
     inputRange: [0, 1],
     outputRange: [width, 0],
   });
+
+  // Gestion des formulaires
+  const onLoginPress = () => {
+    handleLogin(loginForm.email, loginForm.password);
+  };
+
+  const onRegisterPress = () => {
+    handleRegister(registerForm.name, registerForm.email, registerForm.password, registerForm.confirmPassword);
+  };
 
   return (
     <View style={styles.root}>
@@ -63,24 +85,47 @@ export default function ConnectScreen() {
           transform: [{ translateX: loginTranslate }],
         }}>
           {/* Formulaire Connexion */}
-          <Text style={styles.introText}>Make changes to your account here. Click save when you're done.</Text>
+          <Text style={styles.introText}>Connectez-vous à votre compte pour accéder à vos plantes.</Text>
           <View style={styles.inputGroupCustom}>
             {/* Email */}
             <Text style={styles.inputLabel}>Email</Text>
             <View style={styles.inputWithButton}>
-              <TextInput style={styles.inputCustom} placeholder="test@test.fr" placeholderTextColor="#aaa" />
+              <TextInput 
+                style={styles.inputCustom} 
+                placeholder="test@test.fr" 
+                placeholderTextColor="#aaa"
+                value={loginForm.email}
+                onChangeText={(text) => setLoginForm(prev => ({ ...prev, email: text }))}
+                keyboardType="email-address"
+                autoCapitalize="none"
+                editable={!isLoading}
+              />
             </View>
-            <Text style={styles.inputHelp}>Enter your email address</Text>
+            <Text style={styles.inputHelp}>Entrez votre adresse email</Text>
             {/* Password */}
-            <Text style={styles.inputLabel}>Password</Text>
+            <Text style={styles.inputLabel}>Mot de passe</Text>
             <View style={styles.inputWithButton}>
-              <TextInput style={styles.inputCustom} placeholder="********" placeholderTextColor="#aaa" secureTextEntry />
+              <TextInput 
+                style={styles.inputCustom} 
+                placeholder="********" 
+                placeholderTextColor="#aaa" 
+                secureTextEntry
+                value={loginForm.password}
+                onChangeText={(text) => setLoginForm(prev => ({ ...prev, password: text }))}
+                editable={!isLoading}
+              />
             </View>
-            <Text style={styles.inputHelp}>Enter your password</Text>
+            <Text style={styles.inputHelp}>Entrez votre mot de passe</Text>
           </View>
           <View style={styles.buttonContainerCustom}>
-            <TouchableOpacity style={styles.loginButtonCustom}>
-              <Text style={styles.loginButtonText}>Connexion</Text>
+            <TouchableOpacity 
+              style={[styles.loginButtonCustom, isLoading && { opacity: 0.6 }]} 
+              onPress={onLoginPress}
+              disabled={isLoading}
+            >
+              <Text style={styles.loginButtonText}>
+                {isLoading ? 'Connexion...' : 'Connexion'}
+              </Text>
             </TouchableOpacity>
           </View>
         </Animated.View>
@@ -95,27 +140,65 @@ export default function ConnectScreen() {
             {/* Nom */}
             <Text style={styles.inputLabel}>Nom</Text>
             <View style={styles.inputWithButton}>
-              <TextInput style={styles.inputCustom} placeholder="Votre nom" placeholderTextColor="#aaa" />
+              <TextInput 
+                style={styles.inputCustom} 
+                placeholder="Votre nom" 
+                placeholderTextColor="#aaa"
+                value={registerForm.name}
+                onChangeText={(text) => setRegisterForm(prev => ({ ...prev, name: text }))}
+                editable={!isLoading}
+              />
             </View>
             {/* Email */}
             <Text style={styles.inputLabel}>Email</Text>
             <View style={styles.inputWithButton}>
-              <TextInput style={styles.inputCustom} placeholder="test@test.fr" placeholderTextColor="#aaa" />
+              <TextInput 
+                style={styles.inputCustom} 
+                placeholder="test@test.fr" 
+                placeholderTextColor="#aaa"
+                value={registerForm.email}
+                onChangeText={(text) => setRegisterForm(prev => ({ ...prev, email: text }))}
+                keyboardType="email-address"
+                autoCapitalize="none"
+                editable={!isLoading}
+              />
             </View>
             {/* Mot de passe */}
             <Text style={styles.inputLabel}>Mot de passe</Text>
             <View style={styles.inputWithButton}>
-              <TextInput style={styles.inputCustom} placeholder="********" placeholderTextColor="#aaa" secureTextEntry />
+              <TextInput 
+                style={styles.inputCustom} 
+                placeholder="********" 
+                placeholderTextColor="#aaa" 
+                secureTextEntry
+                value={registerForm.password}
+                onChangeText={(text) => setRegisterForm(prev => ({ ...prev, password: text }))}
+                editable={!isLoading}
+              />
             </View>
             {/* Confirmation mot de passe */}
             <Text style={styles.inputLabel}>Confirmer le mot de passe</Text>
             <View style={styles.inputWithButton}>
-              <TextInput style={styles.inputCustom} placeholder="********" placeholderTextColor="#aaa" secureTextEntry />
+              <TextInput 
+                style={styles.inputCustom} 
+                placeholder="********" 
+                placeholderTextColor="#aaa" 
+                secureTextEntry
+                value={registerForm.confirmPassword}
+                onChangeText={(text) => setRegisterForm(prev => ({ ...prev, confirmPassword: text }))}
+                editable={!isLoading}
+              />
             </View>
           </View>
           <View style={styles.buttonContainerCustom}>
-            <TouchableOpacity style={styles.loginButtonCustom}>
-              <Text style={styles.loginButtonText}>Inscription</Text>
+            <TouchableOpacity 
+              style={[styles.loginButtonCustom, isLoading && { opacity: 0.6 }]} 
+              onPress={onRegisterPress}
+              disabled={isLoading}
+            >
+              <Text style={styles.loginButtonText}>
+                {isLoading ? 'Inscription...' : 'Inscription'}
+              </Text>
             </TouchableOpacity>
           </View>
         </Animated.View>

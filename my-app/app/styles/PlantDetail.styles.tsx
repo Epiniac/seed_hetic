@@ -241,6 +241,27 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     letterSpacing: 1,
   },
+  loadingText: {
+    fontFamily: 'Inter',
+    fontSize: 16 * SCALE,
+    color: '#717171',
+    textAlign: 'center',
+    marginTop: 16 * SCALE,
+  },
+  backButton: {
+    backgroundColor: '#26CB66',
+    borderRadius: 25 * SCALE,
+    paddingVertical: 12 * SCALE,
+    paddingHorizontal: 24 * SCALE,
+    marginTop: 20 * SCALE,
+  },
+  backButtonText: {
+    fontFamily: 'Inter',
+    fontSize: 14 * SCALE,
+    color: '#fff',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
 });
 
 export default styles; 

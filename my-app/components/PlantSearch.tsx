@@ -14,12 +14,11 @@ import {
 import { searchPlants, getPlantDetails, PlantSpecies, PlantDetails } from '../services/perenualApi';
 import { plantSearchStyles as styles } from '../app/styles/PlantSearch.styles';
 import { 
-  toggleFavorite, 
-  isFavorite, 
-  getFavoritesCount,
-  FavoritePlant 
-} from '../services/favoritesService';
-import FavoritesList from './FavoritesList';
+  addToLibrary, 
+  isInLibrary,
+  removeFromLibrary,
+  LibraryPlant 
+} from '../services/libraryService';
 
 // ========================================
 // TYPES ET INTERFACES
@@ -60,10 +59,8 @@ export default function PlantSearch({ onPlantSelect, style }: PlantSearchProps) 
   // Référence pour le TextInput
   const searchInputRef = useRef<TextInput>(null);
   
-  // États pour les favoris
-  const [favoritesCount, setFavoritesCount] = useState(0);
-  const [showFavorites, setShowFavorites] = useState(false);
-  const [resultsFavoriteStatus, setResultsFavoriteStatus] = useState<{[key: number]: boolean}>({});
+  // États pour la bibliothèque
+  const [isPlantInLibrary, setIsPlantInLibrary] = useState(false);
 
   // ========================================
   // LOGIQUE DE RECHERCHE (DEBOUNCE)
@@ -113,6 +110,11 @@ export default function PlantSearch({ onPlantSelect, style }: PlantSearchProps) 
     try {
       const details = await getPlantDetails(plant.id);
       setSelectedPlant(details);
+      
+      // Vérifier si la plante est dans la bibliothèque
+      const inLibrary = await isInLibrary(plant.id);
+      setIsPlantInLibrary(inLibrary);
+      
       if (onPlantSelect) {
         onPlantSelect(plant as PlantSpecies);
       }
@@ -139,89 +141,100 @@ export default function PlantSearch({ onPlantSelect, style }: PlantSearchProps) 
   };
 
   // ========================================
-  // GESTION DES FAVORIS
+  // LOGIQUE DE RECHERCHE (DEBOUNCE)
+  // ========================================  // ========================================
+  // GESTION DE LA BIBLIOTHÈQUE
   // ========================================
 
-  // Charger le nombre de favoris au démarrage
-  useEffect(() => {
-    loadFavoritesCount();
-  }, []);
+  const handleAddToLibrary = async () => {
+    if (!selectedPlant) return;
 
-  // Charger le statut favori des résultats quand ils changent
-  useEffect(() => {
-    if (results.length > 0) {
-      checkResultsFavoriteStatus();
-    }
-  }, [results]);
-
-  const loadFavoritesCount = async () => {
     try {
-      const count = await getFavoritesCount();
-      setFavoritesCount(count);
-    } catch (error) {
-      console.error('Erreur lors du chargement du nombre de favoris:', error);
-    }
-  };
-
-  const checkResultsFavoriteStatus = async () => {
-    const status: {[key: number]: boolean} = {};
-    for (const plant of results) {
-      try {
-        status[plant.id] = await isFavorite(plant.id);
-      } catch (error) {
-        status[plant.id] = false;
-      }
-    }
-    setResultsFavoriteStatus(status);
-  };
-
-  const handleToggleFavorite = async (plant: SearchResult) => {
-    try {
-      const favoritePlant: Omit<FavoritePlant, 'addedAt'> = {
-        id: plant.id,
-        common_name: plant.common_name,
-        scientific_name: plant.scientific_name,
-        default_image: plant.default_image,
+      const libraryPlant: Omit<LibraryPlant, 'addedAt'> = {
+        id: selectedPlant.id,
+        common_name: selectedPlant.common_name,
+        scientific_name: selectedPlant.scientific_name,
+        default_image: selectedPlant.default_image ? {
+          thumbnail: selectedPlant.default_image.regular_url || '',
+          small_url: selectedPlant.default_image.regular_url || '',
+          regular_url: selectedPlant.default_image.regular_url || ''
+        } : null,
+        daysToHarvest: '5 days' // Valeur par défaut, peut être personnalisée plus tard
       };
 
-      const newStatus = await toggleFavorite(favoritePlant);
+      const success = await addToLibrary(libraryPlant);
       
-      // Mettre à jour le statut local
-      setResultsFavoriteStatus(prev => ({
-        ...prev,
-        [plant.id]: newStatus
-      }));
-
-      // Recharger le compteur
-      await loadFavoritesCount();
-
-      // Afficher un message
-      Alert.alert(
-        newStatus ? 'Ajouté aux favoris' : 'Retiré des favoris',
-        `"${plant.common_name}" ${newStatus ? 'a été ajouté à' : 'a été retiré de'} vos favoris.`
-      );
+      if (success) {
+        setIsPlantInLibrary(true);
+        Alert.alert(
+          'Ajouté !',
+          `"${selectedPlant.common_name}" est maintenant dans votre bibliothèque.`,
+          [
+            {
+              text: 'OK',
+              onPress: () => {
+                // Fermer le modal après un délai pour que l'utilisateur voie le changement
+                setTimeout(() => {
+                  setShowDetails(false);
+                }, 1000);
+              }
+            }
+          ]
+        );
+      } else {
+        Alert.alert(
+          'Déjà dans la bibliothèque',
+          `"${selectedPlant.common_name}" est déjà dans votre bibliothèque.`
+        );
+      }
     } catch (error) {
-      console.error('Erreur lors de la gestion des favoris:', error);
-      Alert.alert('Erreur', 'Impossible de modifier les favoris');
+      console.error('Erreur lors de l\'ajout à la bibliothèque:', error);
+      Alert.alert('Erreur', 'Impossible d\'ajouter la plante à la bibliothèque');
     }
   };
 
-  const handleFavoritesPress = () => {
-    setShowFavorites(true);
-    setShowResults(false); // Fermer les résultats de recherche
-  };
+  const handleRemoveFromLibrary = async () => {
+    if (!selectedPlant) return;
 
-  const handleFavoriteSelect = (plant: FavoritePlant) => {
-    // Convertir en SearchResult pour réutiliser la logique existante
-    const searchResult: SearchResult = {
-      id: plant.id,
-      common_name: plant.common_name,
-      scientific_name: plant.scientific_name,
-      default_image: plant.default_image,
-    };
-    
-    setShowFavorites(false);
-    handlePlantPress(searchResult);
+    Alert.alert(
+      'Retirer de la bibliothèque',
+      `Êtes-vous sûr de vouloir retirer "${selectedPlant.common_name}" de votre bibliothèque ?`,
+      [
+        {
+          text: 'Annuler',
+          style: 'cancel',
+        },
+        {
+          text: 'Retirer',
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              await removeFromLibrary(selectedPlant.id);
+              setIsPlantInLibrary(false);
+              Alert.alert(
+                'Retiré !',
+                `"${selectedPlant.common_name}" a été retiré de votre bibliothèque.`,
+                [
+                  {
+                    text: 'OK',
+                    onPress: () => {
+                      // Fermer le modal après un délai
+                      setTimeout(() => {
+                        setShowDetails(false);
+                      }, 1000);
+                    }
+                  }
+                ]
+              );
+            } catch (error) {
+              console.error('Erreur lors de la suppression:', error);
+              Alert.alert('Erreur', 'Une erreur est survenue lors de la suppression.');
+            }
+          },
+        },
+      ],
+      { cancelable: true }
+    );
   };
 
   // ========================================
@@ -255,20 +268,12 @@ export default function PlantSearch({ onPlantSelect, style }: PlantSearchProps) 
           </View>
           <View style={styles.textContainer}>
             <Text style={styles.resultTitle}>
-              {item.common_name || 'Nom inconnu'}
+              {String(item.common_name || 'Nom inconnu')}
             </Text>
             <Text style={styles.resultScientific}>
-              {item.scientific_name?.[0] || 'Scientific name unavailable'}
+              {String(item.scientific_name?.[0] || 'Scientific name unavailable')}
             </Text>
           </View>
-          <TouchableOpacity
-            style={styles.favoriteButton}
-            onPress={() => handleToggleFavorite(item)}
-          >
-            <Text style={styles.favoriteButtonText}>
-              {resultsFavoriteStatus[item.id] ? '❤️' : '🤍'}
-            </Text>
-          </TouchableOpacity>
         </View>
       </TouchableOpacity>
     );
@@ -297,28 +302,7 @@ export default function PlantSearch({ onPlantSelect, style }: PlantSearchProps) 
               <Text style={styles.closeButtonText}>✕</Text>
             </TouchableOpacity>
             <Text style={styles.detailsTitle}>Détails de la plante</Text>
-            {/* Bouton favori dans la modal */}
-            {selectedPlant && (
-              <TouchableOpacity
-                style={styles.favoriteButton}
-                onPress={() => {
-                  const searchResult: SearchResult = {
-                    id: selectedPlant.id,
-                    common_name: selectedPlant.common_name,
-                    scientific_name: selectedPlant.scientific_name,
-                    default_image: selectedPlant.default_image ? {
-                      thumbnail: selectedPlant.default_image.regular_url || '',
-                      small_url: selectedPlant.default_image.regular_url || ''
-                    } : null,
-                  };
-                  handleToggleFavorite(searchResult);
-                }}
-              >
-                <Text style={styles.favoriteButtonText}>
-                  {selectedPlant && resultsFavoriteStatus[selectedPlant.id] ? '❤️' : '🤍'}
-                </Text>
-              </TouchableOpacity>
-            )}
+            <View style={styles.headerSpacer} />
           </View>
 
           {isLoadingDetails ? (
@@ -340,39 +324,60 @@ export default function PlantSearch({ onPlantSelect, style }: PlantSearchProps) 
                 />
               )}
               
-              <Text style={styles.detailsPlantName}>{selectedPlant.common_name}</Text>
+              <Text style={styles.detailsPlantName}>{String(selectedPlant.common_name || 'Nom non disponible')}</Text>
               <Text style={styles.detailsScientificName}>
-                {selectedPlant.scientific_name[0]}
+                {Array.isArray(selectedPlant.scientific_name) && selectedPlant.scientific_name.length > 0
+                  ? String(selectedPlant.scientific_name[0])
+                  : String(selectedPlant.scientific_name || 'Nom scientifique non disponible')
+                }
               </Text>
               
               <View style={styles.detailsGrid}>
                 <View style={styles.detailsCard}>
                   <Text style={styles.detailsLabel}>Type</Text>
-                  <Text style={styles.detailsValue}>{selectedPlant.type || 'N/A'}</Text>
+                  <Text style={styles.detailsValue}>{String(selectedPlant.type || 'N/A')}</Text>
                 </View>
                 
                 <View style={styles.detailsCard}>
                   <Text style={styles.detailsLabel}>Cycle</Text>
-                  <Text style={styles.detailsValue}>{selectedPlant.cycle || 'N/A'}</Text>
+                  <Text style={styles.detailsValue}>{String(selectedPlant.cycle || 'N/A')}</Text>
                 </View>
                 
                 <View style={styles.detailsCard}>
                   <Text style={styles.detailsLabel}>Arrosage</Text>
-                  <Text style={styles.detailsValue}>{selectedPlant.watering || 'N/A'}</Text>
+                  <Text style={styles.detailsValue}>{String(selectedPlant.watering || 'N/A')}</Text>
                 </View>
                 
                 <View style={styles.detailsCard}>
                   <Text style={styles.detailsLabel}>Entretien</Text>
-                  <Text style={styles.detailsValue}>{selectedPlant.maintenance || 'N/A'}</Text>
+                  <Text style={styles.detailsValue}>{String(selectedPlant.maintenance || 'N/A')}</Text>
                 </View>
               </View>
 
               {selectedPlant.description && (
                 <View style={styles.descriptionContainer}>
                   <Text style={styles.descriptionLabel}>Description</Text>
-                  <Text style={styles.descriptionText}>{selectedPlant.description}</Text>
+                  <Text style={styles.descriptionText}>{String(selectedPlant.description)}</Text>
                 </View>
               )}
+
+              {/* Bouton Ajouter/Retirer de la bibliothèque */}
+              <View style={styles.libraryButtonContainer}>
+                <TouchableOpacity
+                  style={[
+                    styles.libraryButton,
+                    isPlantInLibrary && styles.libraryButtonDisabled
+                  ]}
+                  onPress={isPlantInLibrary ? handleRemoveFromLibrary : handleAddToLibrary}
+                >
+                  <Text style={[
+                    styles.libraryButtonText,
+                    isPlantInLibrary && styles.libraryButtonTextDisabled
+                  ]}>
+                    {isPlantInLibrary ? '✓ Dans la bibliothèque' : '+ Ajouter à la bibliothèque'}
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </ScrollView>
           )}
         </View>
@@ -412,19 +417,6 @@ export default function PlantSearch({ onPlantSelect, style }: PlantSearchProps) 
         {isLoading && (
           <ActivityIndicator size="small" color="#26CB66" style={styles.loadingIcon} />
         )}
-        
-        {/* Bouton favoris */}
-        <TouchableOpacity
-          style={styles.favoriteButton}
-          onPress={handleFavoritesPress}
-        >
-          <Text style={styles.favoriteButtonText}>❤️</Text>
-          {favoritesCount > 0 && (
-            <View style={styles.favoriteBadge}>
-              <Text style={styles.favoriteBadgeText}>{favoritesCount}</Text>
-            </View>
-          )}
-        </TouchableOpacity>
       </View>
 
       {/* Résultats de recherche */}
@@ -451,19 +443,6 @@ export default function PlantSearch({ onPlantSelect, style }: PlantSearchProps) 
 
       {/* Modal avec détails de la plante */}
       {renderPlantDetails()}
-
-      {/* Modal des favoris */}
-      <Modal
-        visible={showFavorites}
-        animationType="slide"
-        presentationStyle="pageSheet"
-        onRequestClose={() => setShowFavorites(false)}
-      >
-        <FavoritesList
-          onPlantSelect={handleFavoriteSelect}
-          onClose={() => setShowFavorites(false)}
-        />
-      </Modal>
     </View>
   );
 }

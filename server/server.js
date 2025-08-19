@@ -41,7 +41,7 @@ app.get('/api/health', (req, res) => {
 });
 
 // Gestion des erreurs 404
-app.use('*', (req, res) => {
+app.use((req, res) => {
   res.status(404).json({ message: 'Route non trouvée' });
 });
 
@@ -64,7 +64,7 @@ const startServer = async () => {
     
     // Initialiser le catalogue de plantes (en développement)
     if (process.env.NODE_ENV === 'development') {
-      await seedPlantCatalog();
+      // await seedPlantCatalog(); // TODO: Implémenter cette fonction
     }
     
     // Démarrer les tâches cron

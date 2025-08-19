@@ -269,6 +269,54 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
     textTransform: 'uppercase',
   },
+  
+  // Nouveaux styles pour le profil utilisateur connecté
+  profileContainer: {
+    alignItems: 'center',
+    marginVertical: 40 * SCALE,
+    paddingHorizontal: 24 * SCALE,
+  },
+  profileImage: {
+    width: 80 * SCALE,
+    height: 80 * SCALE,
+    borderRadius: 40 * SCALE,
+    marginBottom: 16 * SCALE,
+  },
+  profileName: {
+    fontSize: 24 * SCALE,
+    fontWeight: 'bold',
+    color: '#2E8B57',
+    marginBottom: 8 * SCALE,
+    textAlign: 'center',
+  },
+  profileEmail: {
+    fontSize: 16 * SCALE,
+    color: '#666',
+    textAlign: 'center',
+  },
+  infoContainer: {
+    paddingHorizontal: 24 * SCALE,
+    marginVertical: 20 * SCALE,
+  },
+  infoTitle: {
+    fontSize: 20 * SCALE,
+    fontWeight: 'bold',
+    color: '#2E8B57',
+    textAlign: 'center',
+    marginBottom: 12 * SCALE,
+  },
+  infoText: {
+    fontSize: 16 * SCALE,
+    color: '#666',
+    textAlign: 'center',
+    lineHeight: 22 * SCALE,
+  },
+  logoutButton: {
+    backgroundColor: '#dc3545',
+  },
+  logoutButtonText: {
+    color: '#FFFFFF',
+  },
 })
 
 export default styles;

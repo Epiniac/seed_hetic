@@ -375,4 +375,42 @@ export const plantSearchStyles = StyleSheet.create({
     textAlign: 'center',
     lineHeight: 20,
   },
+  
+  // --- Styles pour la bibliothèque ---
+  libraryButtonContainer: {
+    marginTop: 20,
+    paddingHorizontal: 20,
+    paddingBottom: 10,
+  },
+  libraryButton: {
+    backgroundColor: '#26CB66',
+    borderRadius: 12,
+    paddingVertical: 16,
+    paddingHorizontal: 24,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  libraryButtonDisabled: {
+    backgroundColor: '#E0E0E0',
+  },
+  libraryButtonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  libraryButtonTextDisabled: {
+    color: '#888888',
+  },
+  headerSpacer: {
+    width: 40, // Pour équilibrer avec le bouton de fermeture
+  },
 });

@@ -139,7 +139,7 @@ export default function DashboardPlantDetailScreen() {
         <Image source={plant.image} style={styles.plantImage} resizeMode="cover" />
         <View style={[styles.statusOverlay, { backgroundColor: plant.statusColor + '20' }]}>
           <Text style={[styles.statusOverlayText, { color: plant.statusColor }]}>
-            {plant.status.toUpperCase()}
+            {String(plant.status || '').toUpperCase()}
           </Text>
         </View>
       </View>
@@ -155,11 +155,11 @@ export default function DashboardPlantDetailScreen() {
         <View style={styles.infoRow}>
           <View style={styles.infoItem}>
             <Text style={styles.infoLabel}>Days to Harvest</Text>
-            <Text style={styles.infoValue}>{plant.daysToHarvest}</Text>
+            <Text style={styles.infoValue}>{String(plant.daysToHarvest || 'N/A')}</Text>
           </View>
           <View style={styles.infoItem}>
             <Text style={styles.infoLabel}>Water Level</Text>
-            <Text style={[styles.infoValue, { color: plant.statusColor }]}>{plant.waterLevel}</Text>
+            <Text style={[styles.infoValue, { color: plant.statusColor }]}>{String(plant.waterLevel || 'N/A')}</Text>
           </View>
         </View>
       </View>
@@ -171,22 +171,22 @@ export default function DashboardPlantDetailScreen() {
           <View style={styles.sensorCard}>
             <Image source={require('../../assets/images/Sun.png')} style={styles.sensorIcon} />
             <Text style={styles.sensorLabel}>Temperature</Text>
-            <Text style={styles.sensorValue}>{plant.temperature}</Text>
+            <Text style={styles.sensorValue}>{String(plant.temperature || 'N/A')}</Text>
           </View>
           <View style={styles.sensorCard}>
             <Image source={require('../../assets/images/Humidity.png')} style={styles.sensorIcon} />
             <Text style={styles.sensorLabel}>Humidity</Text>
-            <Text style={styles.sensorValue}>{plant.humidity}</Text>
+            <Text style={styles.sensorValue}>{String(plant.humidity || 'N/A')}</Text>
           </View>
           <View style={styles.sensorCard}>
             <Image source={require('../../assets/images/Soil.png')} style={styles.sensorIcon} />
             <Text style={styles.sensorLabel}>Soil Moisture</Text>
-            <Text style={styles.sensorValue}>{plant.soilMoisture}</Text>
+            <Text style={styles.sensorValue}>{String(plant.soilMoisture || 'N/A')}</Text>
           </View>
           <View style={styles.sensorCard}>
             <Image source={require('../../assets/images/Sun.png')} style={styles.sensorIcon} />
             <Text style={styles.sensorLabel}>Light Level</Text>
-            <Text style={styles.sensorValue}>{plant.lightLevel}</Text>
+            <Text style={styles.sensorValue}>{String(plant.lightLevel || 'N/A')}</Text>
           </View>
         </View>
       </View>
@@ -197,11 +197,11 @@ export default function DashboardPlantDetailScreen() {
         <View style={styles.wateringInfo}>
           <View style={styles.wateringItem}>
             <Text style={styles.wateringLabel}>Last Watered</Text>
-            <Text style={styles.wateringValue}>{plant.lastWatered}</Text>
+            <Text style={styles.wateringValue}>{String(plant.lastWatered || 'N/A')}</Text>
           </View>
           <View style={styles.wateringItem}>
             <Text style={styles.wateringLabel}>Next Watering</Text>
-            <Text style={[styles.wateringValue, { color: plant.statusColor }]}>{plant.nextWatering}</Text>
+            <Text style={[styles.wateringValue, { color: plant.statusColor }]}>{String(plant.nextWatering || 'N/A')}</Text>
           </View>
         </View>
       </View>
@@ -209,16 +209,16 @@ export default function DashboardPlantDetailScreen() {
       {/* Description et recommandations */}
       <View style={styles.descriptionContainer}>
         <Text style={styles.sectionTitle}>Plant Status</Text>
-        <Text style={styles.descriptionText}>{plant.description}</Text>
+        <Text style={styles.descriptionText}>{String(plant.description || 'Aucune description disponible')}</Text>
       </View>
 
       {/* Recommandations */}
       <View style={styles.recommendationsContainer}>
         <Text style={styles.sectionTitle}>Recommendations</Text>
-        {plant.recommendations.map((rec, index) => (
+        {(plant.recommendations || []).map((rec, index) => (
           <View key={index} style={styles.recommendationItem}>
             <View style={[styles.recommendationDot, { backgroundColor: plant.statusColor }]} />
-            <Text style={styles.recommendationText}>{rec}</Text>
+            <Text style={styles.recommendationText}>{String(rec || '')}</Text>
           </View>
         ))}
       </View>

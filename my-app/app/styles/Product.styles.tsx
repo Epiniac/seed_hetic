@@ -265,8 +265,47 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 8,
     elevation: 3,
-    overflow: 'hidden',
+    overflow: 'visible', // Changé pour permettre au bouton de suppression d'être visible
     marginBottom: 16 * SCALE,
+    position: 'relative',
+  },
+
+  // Nouveau style pour le bouton de suppression
+  deleteButton: {
+    position: 'absolute',
+    top: 8 * SCALE,
+    right: 8 * SCALE,
+    width: 24 * SCALE,
+    height: 24 * SCALE,
+    borderRadius: 12 * SCALE,
+    backgroundColor: 'rgba(255, 59, 48, 0.9)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 3,
+  },
+
+  deleteButtonText: {
+    color: '#fff',
+    fontSize: 14 * SCALE,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+
+  // Modifié pour être le contenu cliquable
+  plantCardContent: {
+    width: '100%',
+    overflow: 'hidden',
+    borderRadius: 16 * SCALE,
+  },
+
+  // Renommé pour éviter le conflit
+  plantCardTextContent: {
+    padding: 12 * SCALE,
   },
 
   plantCardImageContainer: {
@@ -280,10 +319,6 @@ const styles = StyleSheet.create({
   plantCardImage: {
     width: '100%',
     height: '100%',
-  },
-
-  plantCardContent: {
-    padding: 12 * SCALE,
   },
 
   plantCardTitle: {
@@ -323,6 +358,32 @@ const styles = StyleSheet.create({
     fontSize: 11 * SCALE,
     color: '#26CB66',
     fontWeight: '600',
+    fontFamily: 'Inter',
+  },
+
+  // Styles pour le message vide
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 40 * SCALE,
+    paddingVertical: 60 * SCALE,
+  },
+
+  emptyTitle: {
+    fontSize: 18 * SCALE,
+    fontWeight: 'bold',
+    color: '#666',
+    textAlign: 'center',
+    marginBottom: 12 * SCALE,
+    fontFamily: 'Inter',
+  },
+
+  emptySubtitle: {
+    fontSize: 14 * SCALE,
+    color: '#999',
+    textAlign: 'center',
+    lineHeight: 20 * SCALE,
     fontFamily: 'Inter',
   },
 
