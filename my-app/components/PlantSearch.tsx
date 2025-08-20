@@ -287,6 +287,19 @@ export default function PlantSearch({ onPlantSelect, style }: PlantSearchProps) 
   const renderPlantDetails = () => {
     if (!selectedPlant) return null;
 
+    // Helper pour afficher un objet ou une liste de paires clé/valeur
+    const renderObject = (obj: any, label: string) => {
+      if (!obj) return null;
+      return (
+        <View style={{ marginBottom: 10 }}>
+          <Text style={styles.detailsLabel}>{label}</Text>
+          {Object.entries(obj).map(([key, value]) => (
+            <Text key={key} style={styles.detailsValue}>{key}: {typeof value === 'object' && value !== null ? JSON.stringify(value) : String(value)}</Text>
+          ))}
+        </View>
+      );
+    };
+
     return (
       <Modal
         visible={showDetails}
@@ -317,6 +330,7 @@ export default function PlantSearch({ onPlantSelect, style }: PlantSearchProps) 
               showsVerticalScrollIndicator={false}
               contentContainerStyle={{ paddingBottom: 20 }}
             >
+              {/* Image principale */}
               {selectedPlant.default_image && (
                 <Image
                   source={{ uri: selectedPlant.default_image.regular_url }}
@@ -324,44 +338,80 @@ export default function PlantSearch({ onPlantSelect, style }: PlantSearchProps) 
                   resizeMode="cover"
                 />
               )}
-              
-              <Text style={styles.detailsPlantName}>{String(selectedPlant.common_name || 'Nom non disponible')}</Text>
+              {/* Champs principaux */}
+              <Text style={styles.detailsPlantName}>{String(selectedPlant.common_name || selectedPlant.name || 'Nom non disponible')}</Text>
               <Text style={styles.detailsScientificName}>
                 {Array.isArray(selectedPlant.scientific_name) && selectedPlant.scientific_name.length > 0
                   ? String(selectedPlant.scientific_name[0])
-                  : String(selectedPlant.scientific_name || 'Nom scientifique non disponible')
+                  : String(selectedPlant.scientific_name || selectedPlant.species || 'Nom scientifique non disponible')
                 }
               </Text>
-              
-              <View style={styles.detailsGrid}>
-                <View style={styles.detailsCard}>
-                  <Text style={styles.detailsLabel}>Type</Text>
-                  <Text style={styles.detailsValue}>{String(selectedPlant.type || 'N/A')}</Text>
-                </View>
-                
-                <View style={styles.detailsCard}>
-                  <Text style={styles.detailsLabel}>Cycle</Text>
-                  <Text style={styles.detailsValue}>{String(selectedPlant.cycle || 'N/A')}</Text>
-                </View>
-                
-                <View style={styles.detailsCard}>
-                  <Text style={styles.detailsLabel}>Arrosage</Text>
-                  <Text style={styles.detailsValue}>{String(selectedPlant.watering || 'N/A')}</Text>
-                </View>
-                
-                <View style={styles.detailsCard}>
-                  <Text style={styles.detailsLabel}>Entretien</Text>
-                  <Text style={styles.detailsValue}>{String(selectedPlant.maintenance || 'N/A')}</Text>
-                </View>
-              </View>
-
               {selectedPlant.description && (
                 <View style={styles.descriptionContainer}>
                   <Text style={styles.descriptionLabel}>Description</Text>
                   <Text style={styles.descriptionText}>{String(selectedPlant.description)}</Text>
                 </View>
               )}
-
+              {/* Champs PlantCatalog supplémentaires */}
+              {selectedPlant.owner && (
+                <Text style={styles.detailsValue}>Propriétaire: {String(selectedPlant.owner)}</Text>
+              )}
+              {selectedPlant.plantingDate && (
+                <Text style={styles.detailsValue}>Date de plantation: {String(selectedPlant.plantingDate)}</Text>
+              )}
+              {renderObject(selectedPlant.careInstructions, 'Instructions d\'entretien')}
+              {renderObject(selectedPlant.currentStats, 'Statistiques actuelles')}
+              {selectedPlant.status && (
+                <Text style={styles.detailsValue}>Statut: {String(selectedPlant.status)}</Text>
+              )}
+              {selectedPlant.notes && Array.isArray(selectedPlant.notes) && selectedPlant.notes.length > 0 && (
+                <View style={{ marginBottom: 10 }}>
+                  <Text style={styles.detailsLabel}>Notes</Text>
+                  {selectedPlant.notes.map((note: any, idx: number) => (
+                    <Text key={idx} style={styles.detailsValue}>{note.content} ({note.date})</Text>
+                  ))}
+                </View>
+              )}
+              {selectedPlant.category && (
+                <Text style={styles.detailsValue}>Catégorie: {String(selectedPlant.category)}</Text>
+              )}
+              {selectedPlant.difficulty && (
+                <Text style={styles.detailsValue}>Difficulté: {String(selectedPlant.difficulty)}</Text>
+              )}
+              {selectedPlant.sunlight && (
+                <Text style={styles.detailsValue}>Ensoleillement: {String(selectedPlant.sunlight)}</Text>
+              )}
+              {selectedPlant.growthRate && (
+                <Text style={styles.detailsValue}>Vitesse de croissance: {String(selectedPlant.growthRate)}</Text>
+              )}
+              {typeof selectedPlant.isPublic !== 'undefined' && (
+                <Text style={styles.detailsValue}>Publique: {selectedPlant.isPublic ? 'Oui' : 'Non'}</Text>
+              )}
+              {selectedPlant.tags && Array.isArray(selectedPlant.tags) && selectedPlant.tags.length > 0 && (
+                <View style={{ marginBottom: 10 }}>
+                  <Text style={styles.detailsLabel}>Tags</Text>
+                  <Text style={styles.detailsValue}>{selectedPlant.tags.join(', ')}</Text>
+                </View>
+              )}
+              {/* Champs type/cycle/watering/maintenance (compatibilité) */}
+              <View style={styles.detailsGrid}>
+                <View style={styles.detailsCard}>
+                  <Text style={styles.detailsLabel}>Type</Text>
+                  <Text style={styles.detailsValue}>{String(selectedPlant.type || 'N/A')}</Text>
+                </View>
+                <View style={styles.detailsCard}>
+                  <Text style={styles.detailsLabel}>Cycle</Text>
+                  <Text style={styles.detailsValue}>{String(selectedPlant.cycle || 'N/A')}</Text>
+                </View>
+                <View style={styles.detailsCard}>
+                  <Text style={styles.detailsLabel}>Arrosage</Text>
+                  <Text style={styles.detailsValue}>{String(selectedPlant.watering || 'N/A')}</Text>
+                </View>
+                <View style={styles.detailsCard}>
+                  <Text style={styles.detailsLabel}>Entretien</Text>
+                  <Text style={styles.detailsValue}>{String(selectedPlant.maintenance || 'N/A')}</Text>
+                </View>
+              </View>
               {/* Bouton Ajouter/Retirer de la bibliothèque */}
               <View style={styles.libraryButtonContainer}>
                 <TouchableOpacity

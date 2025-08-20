@@ -67,7 +67,7 @@ export const testLibraryAPI = async () => {
     const AsyncStorage = await import('@react-native-async-storage/async-storage');
     
     // Vérifier si l'utilisateur est connecté
-    const token = await AsyncStorage.default.getItem('@auth_token');
+    const token = await AsyncStorage.default.getItem('token');
     console.log('🔐 État de connexion:', token ? 'Connecté ✅' : 'Non connecté ❌');
     
     if (!token) {
@@ -110,7 +110,7 @@ export const runAllTests = async () => {
     
     // Vérifier si l'utilisateur est connecté
     const AsyncStorage = await import('@react-native-async-storage/async-storage');
-    const token = await AsyncStorage.default.getItem('@auth_token');
+    const token = await AsyncStorage.default.getItem('token');
     
     if (!token) {
       console.log('\n💡 IMPORTANT: Pour sauvegarder dans MongoDB:');
@@ -156,8 +156,8 @@ export const testAuthentication = async () => {
       
       // Sauvegarder le token
       const AsyncStorage = await import('@react-native-async-storage/async-storage');
-      await AsyncStorage.default.setItem('@auth_token', data.token);
-      await AsyncStorage.default.setItem('@user_data', JSON.stringify(data.user));
+      await AsyncStorage.default.setItem('token', data.token);
+      await AsyncStorage.default.setItem('user', JSON.stringify(data.user));
       
       console.log('   💾 Token sauvegardé localement');
       return true;
@@ -197,8 +197,8 @@ export const testExistingAccount = async () => {
       
       // Sauvegarder le token
       const AsyncStorage = await import('@react-native-async-storage/async-storage');
-      await AsyncStorage.default.setItem('@auth_token', data.token);
-      await AsyncStorage.default.setItem('@user_data', JSON.stringify(data.user));
+      await AsyncStorage.default.setItem('token', data.token);
+      await AsyncStorage.default.setItem('user', JSON.stringify(data.user));
       
       console.log('   💾 Token sauvegardé localement');
       

@@ -32,7 +32,7 @@ export interface LibraryPlant {
  */
 async function getAuthToken(): Promise<string | null> {
   try {
-    return await AsyncStorage.getItem('@auth_token');
+    return await AsyncStorage.getItem('token');
   } catch (error) {
     console.error('Erreur lors de la récupération du token:', error);
     return null;

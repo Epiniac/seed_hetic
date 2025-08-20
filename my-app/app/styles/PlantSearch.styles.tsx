@@ -8,6 +8,8 @@ export const plantSearchStyles = StyleSheet.create({
   // --- Conteneur principal ---
   container: {
     position: 'relative',
+    paddingTop: 16,
+    paddingBottom: 16,
   },
   
   // --- Barre de recherche ---
@@ -16,23 +18,24 @@ export const plantSearchStyles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#F5F5F5',
     borderRadius: 16,
-    marginHorizontal: 20,
-    marginBottom: 8,
+    marginHorizontal: 24,
+    marginBottom: 16,
+    marginTop: 8,
     ...Platform.select({
       ios: {
         minHeight: 64,
-        paddingHorizontal: 16,
-        paddingVertical: 16,
+        paddingHorizontal: 20,
+        paddingVertical: 18,
       },
       android: {
         minHeight: 64,
-        paddingHorizontal: 16,
-        paddingVertical: 16,
+        paddingHorizontal: 20,
+        paddingVertical: 18,
       },
       web: {
         minHeight: 48,
-        paddingHorizontal: 16,
-        paddingVertical: 12,
+        paddingHorizontal: 20,
+        paddingVertical: 14,
       },
     }),
   },
@@ -77,18 +80,18 @@ export const plantSearchStyles = StyleSheet.create({
   // --- Liste des résultats ---
   resultsContainer: {
     backgroundColor: '#fff',
-    borderRadius: 12,
-    marginHorizontal: 20,
-    maxHeight: 350, // Plus de hauteur pour voir plus de résultats
+    borderRadius: 16,
+    marginHorizontal: 24,
+    maxHeight: 380,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
-    paddingVertical: 8,
+    paddingVertical: 12,
     borderWidth: 1,
-    borderColor: '#f0f0f0', // Bordure légère pour mieux voir le conteneur
-    overflow: 'visible', // S'assurer que le contenu est visible
+    borderColor: '#f0f0f0',
+    overflow: 'visible',
   },
   resultsList: {
     maxHeight: 320,
@@ -97,27 +100,27 @@ export const plantSearchStyles = StyleSheet.create({
   resultItem: {
     backgroundColor: '#fff',
     marginHorizontal: 12,
-    marginVertical: 6,
-    borderRadius: 12,
+    marginVertical: 10,
+    borderRadius: 14,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.1,
     shadowRadius: 2,
     elevation: 2,
-    padding: 4,
+    padding: 8,
   },
   resultRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 12,
-    minHeight: 100, // PLUS de hauteur pour la ligne entière
+    padding: 16,
+    minHeight: 110,
     backgroundColor: '#fff',
   },
   imageContainer: {
-    width: 50, // Plus petit pour laisser plus de place au texte
-    height: 50,
-    borderRadius: 12,
-    marginRight: 12, // Moins de margin
+    width: 56,
+    height: 56,
+    borderRadius: 14,
+    marginRight: 16,
     overflow: 'hidden',
     backgroundColor: '#f8f8f8',
   },
@@ -152,8 +155,8 @@ export const plantSearchStyles = StyleSheet.create({
         flex: 1,
       },
     }),
-    paddingHorizontal: 8,
-    paddingVertical: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
     marginRight: 8,
     justifyContent: 'center',
   },
@@ -220,65 +223,69 @@ export const plantSearchStyles = StyleSheet.create({
   },
   detailsContent: {
     flex: 1,
-    padding: 16,
+    padding: 20,
   },
   
   // --- Contenu des détails ---
   detailsImage: {
     width: '100%',
-    height: 200,
-    borderRadius: 12,
-    marginBottom: 16,
+    height: 220,
+    borderRadius: 16,
+    marginBottom: 20,
   },
   detailsPlantName: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: 'bold',
     color: '#333',
-    marginBottom: 8,
+    marginBottom: 10,
   },
   detailsScientificName: {
     fontSize: 18,
     color: '#666',
     fontStyle: 'italic',
-    marginBottom: 24,
+    marginBottom: 28,
   },
   detailsGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    marginBottom: 24,
+    marginBottom: 28,
+    gap: 8,
   },
   detailsCard: {
     width: '48%',
     backgroundColor: '#f8f9fa',
-    padding: 12,
-    borderRadius: 8,
-    marginBottom: 12,
+    padding: 16,
+    borderRadius: 10,
+    marginBottom: 14,
   },
   detailsLabel: {
-    fontSize: 12,
+    fontSize: 13,
     color: '#666',
-    marginBottom: 4,
+    marginBottom: 6,
     textTransform: 'uppercase',
+    letterSpacing: 0.5,
   },
   detailsValue: {
     fontSize: 16,
     fontWeight: '600',
     color: '#333',
+    marginBottom: 2,
   },
   descriptionContainer: {
-    marginTop: 16,
+    marginTop: 20,
+    marginBottom: 10,
   },
   descriptionLabel: {
     fontSize: 16,
     fontWeight: 'bold',
     color: '#333',
-    marginBottom: 8,
+    marginBottom: 10,
   },
   descriptionText: {
-    fontSize: 14,
+    fontSize: 15,
     color: '#666',
-    lineHeight: 20,
+    lineHeight: 22,
   },
   
   // --- Styles pour les favoris ---
@@ -378,9 +385,9 @@ export const plantSearchStyles = StyleSheet.create({
   
   // --- Styles pour la bibliothèque ---
   libraryButtonContainer: {
-    marginTop: 20,
+    marginTop: 28,
     paddingHorizontal: 20,
-    paddingBottom: 10,
+    paddingBottom: 18,
   },
   libraryButton: {
     backgroundColor: '#26CB66',
@@ -412,5 +419,177 @@ export const plantSearchStyles = StyleSheet.create({
   },
   headerSpacer: {
     width: 40, // Pour équilibrer avec le bouton de fermeture
+  },
+
+  // --- Nouveaux styles pour les capteurs et l'entretien ---
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 16,
+    marginTop: 20,
+  },
+  
+  sensorContainer: {
+    marginBottom: 24,
+  },
+  
+  sensorGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    gap: 12,
+  },
+  
+  sensorCard: {
+    width: '48%',
+    backgroundColor: '#f8f9fa',
+    padding: 16,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#e9ecef',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
+    elevation: 1,
+  },
+  
+  sensorHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  
+  sensorIcon: {
+    fontSize: 20,
+    marginRight: 8,
+  },
+  
+  sensorLabel: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#495057',
+    flex: 1,
+  },
+  
+  sensorValue: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#26CB66',
+    marginBottom: 4,
+  },
+  
+  sensorDate: {
+    fontSize: 11,
+    color: '#6c757d',
+    fontStyle: 'italic',
+  },
+  
+  careContainer: {
+    marginBottom: 24,
+  },
+  
+  careCard: {
+    backgroundColor: '#fff',
+    padding: 16,
+    borderRadius: 12,
+    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: '#e9ecef',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
+    elevation: 1,
+  },
+  
+  careHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  
+  careIcon: {
+    fontSize: 18,
+    marginRight: 10,
+  },
+  
+  careLabel: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#495057',
+    flex: 1,
+  },
+  
+  rangeContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+  },
+  
+  rangeText: {
+    fontSize: 14,
+    color: '#6c757d',
+    backgroundColor: '#f8f9fa',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 6,
+  },
+  
+  optimalText: {
+    fontSize: 14,
+    color: '#26CB66',
+    backgroundColor: '#d4edda',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 6,
+    fontWeight: '600',
+  },
+  
+  wateringDetails: {
+    gap: 6,
+  },
+  
+  lastWateredText: {
+    fontSize: 12,
+    color: '#6c757d',
+    fontStyle: 'italic',
+    marginTop: 4,
+  },
+  
+  statusContainer: {
+    marginBottom: 24,
+  },
+  
+  statusBadge: {
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderRadius: 10,
+    alignSelf: 'flex-start',
+  },
+  
+  statusGood: {
+    backgroundColor: '#d4edda',
+    borderColor: '#c3e6cb',
+    borderWidth: 1,
+  },
+  
+  statusWarning: {
+    backgroundColor: '#fff3cd',
+    borderColor: '#ffeaa7',
+    borderWidth: 1,
+  },
+  
+  statusCritical: {
+    backgroundColor: '#f8d7da',
+    borderColor: '#f5c6cb',
+    borderWidth: 1,
+  },
+  
+  statusText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#333',
   },
 });

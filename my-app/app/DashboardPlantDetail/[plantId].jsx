@@ -1,3 +1,5 @@
+// Ce fichier gère l'affichage des détails d'une plante mais c'est du statique
+
 import React, { useState, useEffect } from 'react';
 import { View, Text, Image, TouchableOpacity, ScrollView, Animated } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';

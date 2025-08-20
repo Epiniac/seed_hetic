@@ -1,3 +1,9 @@
+// Ce fichier est un écran modal pour l'application
+// Il affiche un titre et des informations d'édition
+// Il utilise le composant View pour la mise en page et le composant Text pour afficher du texte
+// Le style est appliqué via StyleSheet de React Native
+// Il inclut également un composant StatusBar pour gérer la barre d'état sur iOS
+
 import { StatusBar } from 'expo-status-bar';
 import { Platform, StyleSheet } from 'react-native';
 

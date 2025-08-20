@@ -168,6 +168,7 @@ export default StyleSheet.create({
   imageCol: {
     alignItems: 'center',
     flex: 1,
+    marginRight: 20, // Ajoute un espacement horizontal entre chaque plante
   },
 
   plantImage: {
@@ -181,6 +182,31 @@ export default StyleSheet.create({
     fontSize: 15,
     color: '#222',
     textAlign: 'center',
+  },
+
+  // Styles pour les boutons de suppression
+  deleteButton: {
+    position: 'absolute',
+    top: 5,
+    right: 25,
+    backgroundColor: '#FF6B6B',
+    borderRadius: 12,
+    width: 24,
+    height: 24,
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 10,
+  },
+
+  deleteButtonText: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
+
+  plantCardContent: {
+    flex: 1,
+    alignItems: 'center',
   },
 
 });

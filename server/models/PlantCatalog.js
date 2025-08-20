@@ -19,11 +19,21 @@ const plantCatalogSchema = new mongoose.Schema({
     type: String,
     default: null
   },
-  // Informations d'entretien par défaut pour le catalogue
+  
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
+  plantingDate: {
+    type: Date,
+    default: Date.now
+  },
   careInstructions: {
     watering: {
       frequency: String,
-      amount: String
+      amount: String,
+      lastWatered: Date
     },
     temperature: {
       min: Number,
@@ -36,6 +46,27 @@ const plantCatalogSchema = new mongoose.Schema({
       optimal: Number
     },
   },
+  currentStats: {
+    temperature: {
+      value: Number,
+      unit: { type: String, default: '°C' },
+      lastUpdated: Date
+    },
+    humidity: {
+      value: Number,
+      unit: { type: String, default: '%' },
+      lastUpdated: Date
+    },
+  },
+  status: {
+    type: String,
+    enum: ['bonne sante', 'besoin eau', 'besoin attention', 'critique'],
+    default: 'bonne sante'
+  },
+  notes: [{
+    content: String,
+    date: { type: Date, default: Date.now }
+  }],
   // Métadonnées pour le catalogue
   category: {
     type: String,

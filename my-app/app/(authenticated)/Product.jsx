@@ -32,8 +32,8 @@ export default function ProductScreen() {
       console.log('🔄 Chargement de la bibliothèque...');
       
       // Vérifier l'état de l'authentification
-      const token = await AsyncStorage.getItem('@auth_token');
-      const userData = await AsyncStorage.getItem('@user_data');
+      const token = await AsyncStorage.getItem('token');
+      const userData = await AsyncStorage.getItem('user');
       console.log('🔐 Token présent:', token ? 'Oui' : 'Non');
       console.log('👤 Données utilisateur:', userData ? JSON.parse(userData).name : 'Aucune');
       
