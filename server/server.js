@@ -8,6 +8,8 @@ const connectDB = require('./config/database');
 const authRoutes = require('./routes/auth');
 const plantRoutes = require('./routes/plants');
 const notificationRoutes = require('./routes/notifications');
+const plantCatalogRoutes = require('./routes/plantCatalog');
+const userRoutes = require('./routes/users');
 
 // Charger les variables d'environnement
 dotenv.config();
@@ -30,6 +32,8 @@ app.use((req, res, next) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/plants', plantRoutes);
 app.use('/api/notifications', notificationRoutes);
+app.use('/api/plant-catalog', plantCatalogRoutes);
+app.use('/api/users', userRoutes);
 
 // Route de test
 app.get('/api/health', (req, res) => {

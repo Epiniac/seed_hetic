@@ -23,6 +23,33 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: null
   },
+  // Bibliothèque de plantes de l'utilisateur
+  library: [{
+    plantId: {
+      type: String, // ID de la plante (peut être ObjectId MongoDB ou ID externe)
+      required: true
+    },
+    plantData: {
+      common_name: String,
+      scientific_name: [String],
+      default_image: {
+        thumbnail: String,
+        small_url: String,
+        regular_url: String
+      },
+      care_info: {
+        watering: String,
+        temperature: mongoose.Schema.Types.Mixed,
+        humidity: mongoose.Schema.Types.Mixed
+      },
+      status: String,
+      daysToHarvest: String
+    },
+    addedAt: {
+      type: Date,
+      default: Date.now
+    }
+  }]
 //   preferences: {
 //     notifications: {
 //       type: Boolean,

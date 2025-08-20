@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import styles from '../styles/Connect.styles';
 import { useAuth } from '../../contexts/AuthContext';
@@ -7,6 +7,10 @@ import { useAuthActions } from '../../hooks/useAuthActions';
 export default function ConnectScreen() {
   const { user } = useAuth();
   const { handleLogout } = useAuthActions();
+
+  useEffect(() => {
+    console.log('👤 Utilisateur connecté:', user ? user.name + ' (' + user.email + ')' : 'Non connecté');
+  }, [user]);
 
   return (
     <View style={styles.root}>

@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, Image, TouchableOpacity, TextInput, FlatList, Alert } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from '../styles/Product.styles';
 import { useRouter, useFocusEffect } from 'expo-router';
-import { getLibrary, removeFromLibrary, LibraryPlant } from '../../services/libraryService';
+import { getLibrary, removeFromLibrary } from '../../services/userLibraryService';
 
 const { width } = require('react-native').Dimensions.get('window');
 const IPHONE_16_WIDTH = 430;
@@ -28,10 +29,22 @@ export default function ProductScreen() {
 
   const loadLibraryPlants = async () => {
     try {
+      console.log('🔄 Chargement de la bibliothèque...');
+      
+      // Vérifier l'état de l'authentification
+      const token = await AsyncStorage.getItem('@auth_token');
+      const userData = await AsyncStorage.getItem('@user_data');
+      console.log('🔐 Token présent:', token ? 'Oui' : 'Non');
+      console.log('👤 Données utilisateur:', userData ? JSON.parse(userData).name : 'Aucune');
+      
       const plants = await getLibrary();
+      console.log('📚 Plantes récupérées:', plants.length, 'plantes');
+      if (plants.length > 0) {
+        console.log('🌱 Noms des plantes:', plants.map(p => p.common_name).join(', '));
+      }
       setLibraryPlants(plants);
     } catch (error) {
-      console.error('Erreur lors du chargement de la bibliothèque:', error);
+      console.error('❌ Erreur lors du chargement de la bibliothèque:', error);
     }
   };
 

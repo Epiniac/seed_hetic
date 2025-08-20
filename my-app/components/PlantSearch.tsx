@@ -11,14 +11,14 @@ import {
   Modal,
   ScrollView,
 } from 'react-native';
-import { searchPlants, getPlantDetails, PlantSpecies, PlantDetails } from '../services/perenualApi';
+import { searchPlants, getPlantDetails, PlantSpecies, PlantDetails } from '../services/unifiedPlantApi';
 import { plantSearchStyles as styles } from '../app/styles/PlantSearch.styles';
 import { 
   addToLibrary, 
   isInLibrary,
   removeFromLibrary,
   LibraryPlant 
-} from '../services/libraryService';
+} from '../services/userLibraryService';
 
 // ========================================
 // TYPES ET INTERFACES
@@ -30,12 +30,13 @@ interface PlantSearchProps {
 }
 
 interface SearchResult {
-  id: number;
+  id: string | number; // Compatible avec les deux types d'API
   common_name: string;
   scientific_name: string[];
   default_image?: {
-    thumbnail: string;
-    small_url: string;
+    thumbnail?: string;
+    small_url?: string;
+    regular_url?: string;
   } | null;
 }
 
@@ -52,7 +53,7 @@ export default function PlantSearch({ onPlantSelect, style }: PlantSearchProps) 
   const [results, setResults] = useState<SearchResult[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [showResults, setShowResults] = useState(false);
-  const [selectedPlant, setSelectedPlant] = useState<PlantDetails | null>(null);
+  const [selectedPlant, setSelectedPlant] = useState<PlantDetails | any | null>(null);
   const [showDetails, setShowDetails] = useState(false);
   const [isLoadingDetails, setIsLoadingDetails] = useState(false);
   
@@ -112,7 +113,7 @@ export default function PlantSearch({ onPlantSelect, style }: PlantSearchProps) 
       setSelectedPlant(details);
       
       // Vérifier si la plante est dans la bibliothèque
-      const inLibrary = await isInLibrary(plant.id);
+      const inLibrary = await isInLibrary(String(plant.id));
       setIsPlantInLibrary(inLibrary);
       
       if (onPlantSelect) {
@@ -151,12 +152,12 @@ export default function PlantSearch({ onPlantSelect, style }: PlantSearchProps) 
 
     try {
       const libraryPlant: Omit<LibraryPlant, 'addedAt'> = {
-        id: selectedPlant.id,
+        id: String(selectedPlant.id),
         common_name: selectedPlant.common_name,
         scientific_name: selectedPlant.scientific_name,
         default_image: selectedPlant.default_image ? {
-          thumbnail: selectedPlant.default_image.regular_url || '',
-          small_url: selectedPlant.default_image.regular_url || '',
+          thumbnail: selectedPlant.default_image.regular_url || selectedPlant.default_image.thumbnail || '',
+          small_url: selectedPlant.default_image.regular_url || selectedPlant.default_image.small_url || '',
           regular_url: selectedPlant.default_image.regular_url || ''
         } : null,
         daysToHarvest: '5 days' // Valeur par défaut, peut être personnalisée plus tard
@@ -209,7 +210,7 @@ export default function PlantSearch({ onPlantSelect, style }: PlantSearchProps) 
           style: 'destructive',
           onPress: async () => {
             try {
-              await removeFromLibrary(selectedPlant.id);
+              await removeFromLibrary(String(selectedPlant.id));
               setIsPlantInLibrary(false);
               Alert.alert(
                 'Retiré !',
@@ -426,7 +427,7 @@ export default function PlantSearch({ onPlantSelect, style }: PlantSearchProps) 
             <FlatList
               data={results}
               renderItem={renderSearchResult}
-              keyExtractor={(item) => item.id.toString()}
+              keyExtractor={(item) => String(item.id)}
               style={styles.resultsList}
               showsVerticalScrollIndicator={false}
               nestedScrollEnabled={true}

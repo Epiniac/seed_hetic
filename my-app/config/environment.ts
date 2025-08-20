@@ -9,3 +9,8 @@ export const config = {
   // Autres configurations
   TIMEOUT: 10000, // 10 secondes
 };
+
+// Export direct pour compatibilité
+export const BACKEND_URL = __DEV__ 
+  ? 'http://192.168.1.35:3001' // Port correct : 3001 au lieu de 3000
+  : 'https://votre-domaine-production.com';
