@@ -276,11 +276,36 @@ const styles = StyleSheet.create({
     marginVertical: 40 * SCALE,
     paddingHorizontal: 24 * SCALE,
   },
+  profileImageContainer: {
+    position: 'relative',
+    marginBottom: 16 * SCALE,
+  },
   profileImage: {
     width: 80 * SCALE,
     height: 80 * SCALE,
     borderRadius: 40 * SCALE,
-    marginBottom: 16 * SCALE,
+  },
+  editOverlay: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    backgroundColor: '#2E8B57',
+    borderRadius: 12 * SCALE,
+    width: 24 * SCALE,
+    height: 24 * SCALE,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: '#FEFBFB',
+  },
+  editText: {
+    fontSize: 12 * SCALE,
+    color: '#FFFFFF',
+  },
+  editIcon: {
+    width: 12 * SCALE,
+    height: 12 * SCALE,
+    tintColor: '#FFFFFF',
   },
   profileName: {
     fontSize: 24 * SCALE,
@@ -293,6 +318,23 @@ const styles = StyleSheet.create({
     fontSize: 16 * SCALE,
     color: '#666',
     textAlign: 'center',
+    marginBottom: 16 * SCALE,
+  },
+  editAvatarButton: {
+    backgroundColor: '#2E8B57',
+    paddingVertical: 8 * SCALE,
+    paddingHorizontal: 16 * SCALE,
+    borderRadius: 20 * SCALE,
+    marginTop: 8 * SCALE,
+  },
+  editAvatarButtonText: {
+    color: '#FFFFFF',
+    fontSize: 14 * SCALE,
+    fontWeight: '500',
+  },
+  disabledButton: {
+    backgroundColor: '#999999',
+    opacity: 0.6,
   },
   infoContainer: {
     paddingHorizontal: 24 * SCALE,

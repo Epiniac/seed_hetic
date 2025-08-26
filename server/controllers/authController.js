@@ -36,7 +36,8 @@ const authController = {
         user: {
           id: user._id,
           email: user.email,
-          name: user.name
+          name: user.name,
+          avatar: user.avatar
         }
       });
     } catch (error) {
@@ -75,7 +76,8 @@ const authController = {
         user: {
           id: user._id,
           email: user.email,
-          name: user.name
+          name: user.name,
+          avatar: user.avatar
         }
       });
     } catch (error) {
@@ -89,6 +91,47 @@ const authController = {
       const user = await User.findById(req.user.id).select('-password');
       res.json(user);
     } catch (error) {
+      res.status(500).json({ message: 'Erreur serveur', error: error.message });
+    }
+  },
+
+  // Mettre à jour l'avatar de l'utilisateur
+  updateAvatar: async (req, res) => {
+    try {
+      console.log('📸 Début mise à jour avatar pour utilisateur:', req.user.id);
+      const { avatar } = req.body;
+      
+      if (!avatar) {
+        console.log('❌ Avatar manquant dans la requête');
+        return res.status(400).json({ message: 'URL de l\'avatar requis' });
+      }
+
+      console.log('📸 Taille de l\'avatar reçu:', avatar.length, 'caractères');
+
+      const user = await User.findByIdAndUpdate(
+        req.user.id,
+        { avatar },
+        { new: true }
+      ).select('-password');
+
+      if (!user) {
+        console.log('❌ Utilisateur non trouvé:', req.user.id);
+        return res.status(404).json({ message: 'Utilisateur non trouvé' });
+      }
+
+      console.log('✅ Avatar mis à jour avec succès pour:', user.email);
+
+      res.json({
+        message: 'Avatar mis à jour avec succès',
+        user: {
+          id: user._id,
+          email: user.email,
+          name: user.name,
+          avatar: user.avatar
+        }
+      });
+    } catch (error) {
+      console.error('❌ Erreur mise à jour avatar:', error);
       res.status(500).json({ message: 'Erreur serveur', error: error.message });
     }
   }

@@ -16,9 +16,17 @@ const auth = async (req, res, next) => {
       return res.status(401).json({ message: 'Token invalide' });
     }
 
-    req.user = user;
+    // Assurer que req.user a bien un id
+    req.user = {
+      id: user._id,
+      email: user.email,
+      name: user.name,
+      avatar: user.avatar
+    };
+    
     next();
   } catch (error) {
+    console.error('❌ Erreur authentification:', error);
     res.status(401).json({ message: 'Token invalide' });
   }
 };

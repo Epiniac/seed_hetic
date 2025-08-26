@@ -131,7 +131,7 @@ export default function ProductScreen() {
         </View>
         <View style={styles.plantCardTextContent}>
           <Text style={styles.plantCardTitle}>{plant.common_name}</Text>
-          <Text style={styles.plantCardSubtitle}>{plant.daysToHarvest} to harvest</Text>
+          <Text style={styles.plantCardSubtitle}>{plant.daysToHarvest} à récolter</Text>
         </View>
       </TouchableOpacity>
     </View>
@@ -152,7 +152,7 @@ export default function ProductScreen() {
         <Image source={require('../../assets/images/Search.png')} style={styles.searchIcon} />
         <TextInput
           style={styles.searchInput}
-          placeholder="Search plants..."
+          placeholder="Rechercher"
           placeholderTextColor="#717171"
           value={searchQuery}
           onChangeText={handleSearch}

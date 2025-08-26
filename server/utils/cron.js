@@ -19,7 +19,7 @@ cron.schedule('0 8 * * *', async () => {
         
         if (humidityDifference > humidityTolerance) {
           let message;
-          let priority = 'medium';
+          let priority = 'moyen'; // Changé de 'medium' à 'moyen'
           
           if (currentHumidity < optimalHumidity) {
             message = `L'humidité de votre ${plant.name} est trop faible (${currentHumidity}%). Optimal: ${optimalHumidity}%`;
@@ -29,7 +29,7 @@ cron.schedule('0 8 * * *', async () => {
           
           // Priorité haute si l'écart est très important
           if (humidityDifference > humidityTolerance * 2) {
-            priority = 'high';
+            priority = 'élevé'; // Changé de 'high' à 'élevé'
           }
           
           await Notification.create({
@@ -56,7 +56,7 @@ cron.schedule('0 8 * * *', async () => {
         
         let temperatureAlert = false;
         let message;
-        let priority = 'high';
+        let priority = 'élevé'; // Changé de 'high' à 'élevé'
         
         if (currentTemp < minTemp) {
           temperatureAlert = true;

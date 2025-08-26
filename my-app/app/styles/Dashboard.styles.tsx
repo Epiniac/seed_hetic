@@ -78,29 +78,168 @@ export default StyleSheet.create({
     marginLeft: 8,
   },
 
-  // Thrid content
+  // Notification Cards - Styles génériques et spécifiques
 
   macetaCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#26CB66', // couleur douce bleutée
-    borderRadius: 20,
-    padding: 16,
+    backgroundColor: '#FFF',
+    borderRadius: 16,
+    padding: 20,
     marginHorizontal: 20,
-    marginBottom: 24,
+    marginBottom: 12,
     shadowColor: '#000',
-    shadowOpacity: 0.06,
+    shadowOpacity: 0.1,
     shadowRadius: 8,
-    elevation: 2,
-    width: 390,
-    height: 200,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    elevation: 3,
+    borderLeftWidth: 4,
+    borderLeftColor: '#E0E0E0',
   },
 
+  // Notifications d'arrosage - Thème bleu/eau
+  notificationArrosage: {
+    backgroundColor: '#F0F8FF', // Alice Blue très clair
+    borderLeftColor: '#1E90FF', // Dodger Blue
+    shadowColor: '#1E90FF',
+    shadowOpacity: 0.15,
+  },
+
+  notificationArrosageIcon: {
+    backgroundColor: '#E6F3FF', // Bleu très clair
+    borderWidth: 2,
+    borderColor: '#87CEEB', // Sky Blue
+  },
+
+  notificationArrosageTitle: {
+    color: '#1E90FF', // Dodger Blue
+    fontSize: 17,
+    fontWeight: '700',
+    marginBottom: 6,
+  },
+
+  notificationArrosageSubtitle: {
+    color: '#4682B4', // Steel Blue
+    fontSize: 14,
+    lineHeight: 18,
+    fontWeight: '500',
+  },
+
+  // Notifications de température - Thème rouge/orange
+  notificationTemperature: {
+    backgroundColor: '#FFF5F5', // Rouge très clair
+    borderLeftColor: '#FF6347', // Tomato
+    shadowColor: '#FF6347',
+    shadowOpacity: 0.15,
+  },
+
+  notificationTemperatureIcon: {
+    backgroundColor: '#FFE4E1', // Misty Rose
+    borderWidth: 2,
+    borderColor: '#FFA07A', // Light Salmon
+  },
+
+  notificationTemperatureTitle: {
+    color: '#DC143C', // Crimson
+    fontSize: 17,
+    fontWeight: '700',
+    marginBottom: 6,
+  },
+
+  notificationTemperatureSubtitle: {
+    color: '#B22222', // Fire Brick
+    fontSize: 14,
+    lineHeight: 18,
+    fontWeight: '500',
+  },
+
+  // Notifications générales/positives - Thème vert
+  notificationGenerale: {
+    backgroundColor: '#F0FFF0', // Honeydew
+    borderLeftColor: '#32CD32', // Lime Green
+    shadowColor: '#32CD32',
+    shadowOpacity: 0.15,
+  },
+
+  notificationGeneraleIcon: {
+    backgroundColor: '#E6FFE6', // Vert très clair
+    borderWidth: 2,
+    borderColor: '#90EE90', // Light Green
+  },
+
+  notificationGeneraleTitle: {
+    color: '#228B22', // Forest Green
+    fontSize: 17,
+    fontWeight: '700',
+    marginBottom: 6,
+  },
+
+  notificationGeneraleSubtitle: {
+    color: '#006400', // Dark Green
+    fontSize: 14,
+    lineHeight: 18,
+    fontWeight: '500',
+  },
+
+  // Notifications d'humidité - Thème violet/lavande
+  notificationHumidite: {
+    backgroundColor: '#F8F8FF', // Ghost White
+    borderLeftColor: '#9370DB', // Medium Purple
+    shadowColor: '#9370DB',
+    shadowOpacity: 0.15,
+  },
+
+  notificationHumiditeIcon: {
+    backgroundColor: '#F0E6FF', // Violet très clair
+    borderWidth: 2,
+    borderColor: '#DDA0DD', // Plum
+  },
+
+  notificationHumiditeTitle: {
+    color: '#8A2BE2', // Blue Violet
+    fontSize: 17,
+    fontWeight: '700',
+    marginBottom: 6,
+  },
+
+  notificationHumiditeSubtitle: {
+    color: '#663399', // Rebecca Purple
+    fontSize: 14,
+    lineHeight: 18,
+    fontWeight: '500',
+  },
+
+  // Styles par priorité
+  priorityHigh: {
+    borderLeftWidth: 6,
+    shadowOpacity: 0.25,
+    shadowRadius: 12,
+  },
+
+  priorityMedium: {
+    borderLeftWidth: 4,
+    shadowOpacity: 0.15,
+    shadowRadius: 8,
+  },
+
+  priorityLow: {
+    borderLeftWidth: 3,
+    shadowOpacity: 0.1,
+    shadowRadius: 6,
+  },
+
+  // Style pour l'icône de notification
   macetaImage: {
-    width: 64,
-    height: 64,
-    borderRadius: 16,
+    width: 48,
+    height: 48,
+    borderRadius: 24,
     marginRight: 16,
+    backgroundColor: '#F5F5F5',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 
   macetaTextCol: {
@@ -108,18 +247,20 @@ export default StyleSheet.create({
     justifyContent: 'center',
   },
 
+  // Styles génériques pour le texte (utilisés comme fallback)
   macetaTitle: {
-    fontSize: 25,
-    fontWeight: 'bold',
-    color: '#fff',
-    marginBottom: 10,
-    maxWidth: '55%',
+    fontSize: 17,
+    fontWeight: '700',
+    color: '#333',
+    marginBottom: 6,
+    lineHeight: 22,
   },
+  
   macetaSubtitle: {
     fontSize: 14,
-    color: '#fff', // bleu doux
-    maxWidth: '55%',
-
+    color: '#666',
+    lineHeight: 18,
+    fontWeight: '400',
   },
 
   // Catégories Plantes 

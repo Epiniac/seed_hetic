@@ -245,9 +245,6 @@ export default function PlantDetailScreen() {
         </View>
       )}
       {/* Champs PlantCatalog supplémentaires */}
-      {plant.owner && (
-        <Text style={styles.detailsValue}>Propriétaire: {String(plant.owner)}</Text>
-      )}
       {plant.plantingDate && (
         <Text style={styles.detailsValue}>Date de plantation: {String(plant.plantingDate)}</Text>
       )}
@@ -305,7 +302,9 @@ export default function PlantDetailScreen() {
           <Text style={styles.detailsValue}>{plant.tags.join(', ')}</Text>
         </View>
       )}
-      {/* Champs type/cycle/watering/maintenance (compatibilité) */}
+
+
+      {/* Champs type/cycle/watering/maintenance (compatibilité)
       <View style={styles.detailsGrid}>
         <View style={styles.detailsCard}>
           <Text style={styles.detailsLabel}>Type</Text>
@@ -323,7 +322,9 @@ export default function PlantDetailScreen() {
           <Text style={styles.detailsLabel}>Entretien</Text>
           <Text style={styles.detailsValue}>{String(plant.maintenance || 'N/A')}</Text>
         </View>
-      </View>
+      </View> */}
+
+
       {/* CTA - Conditionnellement Mise en pot ou Retour */}
       <View style={styles.libraryButtonContainer}>
         {source === 'dashboard' ? (

@@ -5,6 +5,7 @@ interface User {
   id: string;
   email: string;
   name: string;
+  avatar?: string;
 }
 
 interface AuthContextType {
@@ -15,6 +16,7 @@ interface AuthContextType {
   register: (name: string, email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   checkAuthStatus: () => Promise<void>;
+  updateAvatar: (avatar: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -70,6 +72,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
+  const updateAvatar = async (avatar: string) => {
+    try {
+      const updatedUser = await authService.updateAvatar(avatar);
+      setUser(updatedUser);
+    } catch (error) {
+      throw error;
+    }
+  };
+
   useEffect(() => {
     checkAuthStatus();
   }, []);
@@ -82,6 +93,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     register,
     logout,
     checkAuthStatus,
+    updateAvatar,
   };
 
   return (
