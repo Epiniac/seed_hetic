@@ -8,6 +8,7 @@ const connectDB = require('./config/database');
 const authRoutes = require('./routes/auth');
 const plantRoutes = require('./routes/plants');
 const notificationRoutes = require('./routes/notifications');
+const sensorRoutes = require('./routes/sensors');
 
 // Charger les variables d'environnement
 dotenv.config();
@@ -30,6 +31,7 @@ app.use((req, res, next) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/plants', plantRoutes);
 app.use('/api/notifications', notificationRoutes);
+app.use('/api/sensors', sensorRoutes);
 
 // Route de test
 app.get('/api/health', (req, res) => {
@@ -65,6 +67,15 @@ const startServer = async () => {
     // Initialiser le catalogue de plantes (en développement)
     if (process.env.NODE_ENV === 'development') {
       // await seedPlantCatalog(); // TODO: Implémenter cette fonction
+    }
+    
+    // Initialiser MQTT pour IoT
+    try {
+      const { setupRaspberryDataHandler } = require('./mqtt/raspberryHandler.js');
+      const mqttClient = setupRaspberryDataHandler();
+      console.log('✅ MQTT initialisé - Collecte de données capteurs activée');
+    } catch (error) {
+      console.warn('⚠️ MQTT non disponible:', error.message);
     }
     
     // Démarrer les tâches cron

@@ -1,9 +1,10 @@
-import mqtt from 'mqtt';
-import { config } from '../config/config.js';
+const mqtt = require('mqtt');
+const { config } = require('../config/config.js');
 
-export function startMQTTClient() {
+function startMQTTClient() {
     const protocol = config.mqtt.forceUnsecure ? 'mqtt' : 'mqtts';
     const brokerUrl = `${protocol}://${config.mqtt.brokerUrl}:${config.mqtt.port}`;
+    
     const options = {
         username: config.mqtt.username,
         password: config.mqtt.password,
@@ -34,3 +35,4 @@ export function startMQTTClient() {
 
     return client;
 }
+module.exports = { startMQTTClient };

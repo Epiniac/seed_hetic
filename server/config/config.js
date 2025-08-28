@@ -1,7 +1,7 @@
-import dotenv from 'dotenv';
+const dotenv = require('dotenv');
 dotenv.config();
 
-export const config = {
+const config = {
   mqtt: {
     brokerUrl: process.env.WM_SERVICES_MQTT_HOSTNAME,
     port: parseInt(process.env.WM_SERVICES_MQTT_PORT, 10),
@@ -11,3 +11,4 @@ export const config = {
     topic: process.env.MQTT_TOPIC || 'raspberry/data',
   }
 };
+module.exports = { config };

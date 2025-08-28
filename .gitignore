@@ -13,6 +13,9 @@ expo-env.d.ts
 .DS_Store
 *.keystore
 
+# Documentation temporaire
+MQTT_SETUP.md
+
 # Native
 .kotlin/
 *.orig.*

@@ -192,7 +192,7 @@ async function checkPlantAlerts(plant) {
   // Mettre à jour le statut de la plante
   if (alerts.length > 0) {
     const hasHighPriority = alerts.some(alert => alert.priority === 'high');
-    plant.status = hasHighPriority ? 'critical' : 'needs-attention';
+    plant.status = hasHighPriority ? 'critique' : 'besoin attention';
     await plant.save();
   }
 }
