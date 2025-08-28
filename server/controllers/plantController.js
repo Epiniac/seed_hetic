@@ -358,19 +358,11 @@ async function checkPlantAlerts(plant) {
       });
     }
 
-    // Mettre à jour le statut de la plante
-    if (alerts.length > 0) {
-      const hasHighPriority = alerts.some(alert => alert.priority === 'élevé');
-      plant.status = hasHighPriority ? 'critique' : 'besoin attention';
-      await plant.save();
-    } else {
-      // Si pas d'alertes, remettre en bonne santé
-      plant.status = 'bonne sante';
-      await plant.save();
-    }
-  } catch (error) {
-    console.error('Erreur dans checkPlantAlerts:', error);
-    // Ne pas faire planter le processus principal
+  // Mettre à jour le statut de la plante
+  if (alerts.length > 0) {
+    const hasHighPriority = alerts.some(alert => alert.priority === 'high');
+    plant.status = hasHighPriority ? 'critique' : 'besoin attention';
+    await plant.save();
   }
 }
 
