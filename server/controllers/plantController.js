@@ -364,6 +364,9 @@ async function checkPlantAlerts(plant) {
     plant.status = hasHighPriority ? 'critique' : 'besoin attention';
     await plant.save();
   }
+  } catch (error) {
+    console.error('Erreur lors de la vérification des alertes:', error);
+  }
 }
 
 module.exports = plantController;
