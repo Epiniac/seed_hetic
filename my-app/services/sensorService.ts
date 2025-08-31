@@ -3,6 +3,26 @@ import { config } from '../config/environment';
 
 const SENSOR_API_URL = `${config.API_BASE_URL.replace('/api', '')}/api/sensors/latest`;
 
+interface SensorData {
+  type: string;
+  value: string | number; // Peut être string ou number
+  source: string;
+  timestamp: string;
+}
+
+interface SensorReading {
+  value: number;
+  source: string;
+  timestamp: string;
+}
+
+interface FormattedSensorData {
+  temperature: SensorReading | null;
+  humidity: SensorReading | null;
+  lastUpdate: string | null;
+  sources: string[];
+}
+
 export const sensorService = {
   // Récupérer les dernières données des capteurs
   async getLatestSensorData() {
@@ -28,7 +48,7 @@ export const sensorService = {
       console.error('Erreur récupération données capteurs:', error);
       return {
         success: false,
-        error: error.message,
+        error: error instanceof Error ? error.message : 'Unknown error',
         data: {
           temperature: null,
           humidity: null,
@@ -39,8 +59,8 @@ export const sensorService = {
   },
 
   // Formater les données pour l'affichage
-  formatSensorData(rawData) {
-    const result = {
+  formatSensorData(rawData: SensorData[]): FormattedSensorData {
+    const result: FormattedSensorData = {
       temperature: null,
       humidity: null,
       lastUpdate: null,
@@ -58,7 +78,7 @@ export const sensorService = {
     if (temperatures.length > 0) {
       const latestTemp = temperatures[temperatures.length - 1];
       result.temperature = {
-        value: parseFloat(latestTemp.value),
+        value: typeof latestTemp.value === 'string' ? parseFloat(latestTemp.value) : latestTemp.value,
         source: latestTemp.source,
         timestamp: latestTemp.timestamp
       };
@@ -68,7 +88,7 @@ export const sensorService = {
     if (humidities.length > 0) {
       const latestHumidity = humidities[humidities.length - 1];
       result.humidity = {
-        value: parseFloat(latestHumidity.value),
+        value: typeof latestHumidity.value === 'string' ? parseFloat(latestHumidity.value) : latestHumidity.value,
         source: latestHumidity.source,
         timestamp: latestHumidity.timestamp
       };
