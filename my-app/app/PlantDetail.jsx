@@ -9,6 +9,7 @@ import { View, Text, Image, TouchableOpacity, ScrollView, ActivityIndicator } fr
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { getPlantDetails } from '../services/unifiedPlantApi';
 import { plantSearchStyles as styles } from '../app/styles/PlantSearch.styles';
+import { sensorService } from '../services/sensorService';
 
 const { width } = require('react-native').Dimensions.get('window');
 const IPHONE_16_WIDTH = 430; // iPhone 16 Pro Max width in pt
@@ -26,6 +27,24 @@ export default function PlantDetailScreen() {
   const [plant, setPlant] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [sensorData, setSensorData] = useState(null);
+
+  // Fonction pour charger les données des capteurs
+  const loadSensorData = async () => {
+    try {
+      console.log('🔄 Chargement des données des capteurs...');
+      const sensorResponse = await sensorService.getLatestSensorData();
+      
+      if (sensorResponse.success && sensorResponse.data) {
+        console.log('✅ Données capteurs reçues:', sensorResponse.data);
+        setSensorData(sensorResponse.data);
+      } else {
+        console.log('⚠️ Aucune donnée capteur disponible:', sensorResponse.error);
+      }
+    } catch (error) {
+      console.error('❌ Erreur chargement capteurs:', error);
+    }
+  };
 
   // Charger les détails de la plante au montage du composant
   useEffect(() => {
@@ -55,6 +74,9 @@ export default function PlantDetailScreen() {
         }
         setPlant(details);
         setError(null);
+        
+        // Charger les données des capteurs en parallèle
+        loadSensorData();
       } catch (err) {
         console.error('Erreur lors du chargement des détails:', err);
         setError('Impossible de charger les détails de la plante');
@@ -250,7 +272,18 @@ export default function PlantDetailScreen() {
       )}
 
       {/* Nouvelles sections améliorées pour les capteurs */}
-      {renderSensorStats(plant.currentStats)}
+      {renderSensorStats(sensorData ? {
+        temperature: sensorData.temperature ? {
+          value: sensorData.temperature.value,
+          unit: 'C',
+          lastUpdated: sensorData.temperature.timestamp
+        } : null,
+        humidity: sensorData.humidity ? {
+          value: sensorData.humidity.value,
+          unit: '%',
+          lastUpdated: sensorData.humidity.timestamp
+        } : null
+      } : plant.currentStats)}
       {renderCareInstructions(plant.careInstructions)}
 
       {/* Statut de la plante avec indicateur visuel */}

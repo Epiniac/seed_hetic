@@ -1,6 +1,7 @@
 // Service pour récupérer les données des capteurs en temps réel
-// URL de ton serveur Node.js local
-const SENSOR_API_URL = 'http://localhost:3001/api/sensors/latest';
+import { config } from '../config/environment';
+
+const SENSOR_API_URL = `${config.API_BASE_URL.replace('/api', '')}/api/sensors/latest`;
 
 export const sensorService = {
   // Récupérer les dernières données des capteurs
