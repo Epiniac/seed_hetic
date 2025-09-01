@@ -8,12 +8,16 @@ export default [
         require: "readonly",
         module: "readonly",
         process: "readonly",
-        __dirname: "readonly"
+        __dirname: "readonly",
+        Buffer: "readonly",
+        setImmediate: "readonly",
+        clearImmediate: "readonly",
+        setTimeout: "readonly",
+        clearTimeout: "readonly",
+        setInterval: "readonly",
+        clearInterval: "readonly",
+        console: "readonly"
       }
-    },
-    env: {
-      node: true,
-      es2021: true
     },
     rules: {}
   }
