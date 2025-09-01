@@ -31,8 +31,12 @@ jobs:
         working-directory: server
         run: npm ci
 
+      - name: Run ESLint
+        if: steps.check_back.outputs.exists == 'true'
+        working-directory: server
+        run: npx eslint . --max-warnings=0
+
       - name: Run tests
         if: steps.check_back.outputs.exists == 'true'
         working-directory: server
         run: npm test
-
