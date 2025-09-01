@@ -2,7 +2,7 @@ name: Back CI
 
 on:
   push:
-    branches: [develop, main, hotfix/ymlfiles]
+    branches: [develop, main]
   pull_request:
 
 jobs:
