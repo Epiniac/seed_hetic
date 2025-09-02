@@ -1,4 +1,3 @@
-version: '3.8'
 services:
   backend:
     build: ./server
@@ -8,3 +7,11 @@ services:
     build: ./my-app
     ports:
       - "8081:8081"
+      - "19000:19000"
+      - "19001:19001"
+      - "19002:19002"
+    environment:
+      - EXPO_NO_INTERACTIVE=false
+    stdin_open: true
+    tty: true
+    command: ["npx", "expo", "start", "--lan"]
