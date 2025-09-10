@@ -11,6 +11,7 @@ const notificationRoutes = require('./routes/notifications');
 const plantCatalogRoutes = require('./routes/plantCatalog');
 const userRoutes = require('./routes/users');
 const sensorRoutes = require('./routes/sensors');
+const plantAnalysisRoutes = require('./routes/plantAnalysis');
 
 // Charger les variables d'environnement
 dotenv.config();
@@ -36,6 +37,7 @@ app.use('/api/notifications', notificationRoutes);
 app.use('/api/plant-catalog', plantCatalogRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/sensors', sensorRoutes);
+app.use('/api/plant-analysis', plantAnalysisRoutes);
 
 // Route de test
 app.get('/api/health', (req, res) => {
