@@ -56,6 +56,18 @@ export default function AuthenticatedTabLayout() {
             ),
           }}
         />
+        <Tabs.Screen
+          name="AiDetect"
+          options={{
+            tabBarIcon: ({ color }) => (
+              <Image 
+                source={require('@/assets/images/Files_2.png')} 
+                style={{ width: 28, height: 28, tintColor: color }} 
+                resizeMode="contain" 
+                />
+            ),
+          }}
+        />
 
         <Tabs.Screen
           name="Connect"

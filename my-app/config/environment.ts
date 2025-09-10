@@ -2,8 +2,9 @@
 export const config = {
   // URL de votre serveur backend
   // Pour le développement local, utilisez l'IP de votre machine ou localhost
+  // $ ifconfig | grep "inet " | grep -v 127.0.0.1
   API_BASE_URL: __DEV__ 
-    ? 'http://192.168.1.158:3001/api' // IP locale de votre machine
+    ? 'http://192.168.70.231:3001/api' // IP locale de votre machine
     : 'https://votre-domaine-production.com/api',
     
   // Autres configurations
@@ -12,5 +13,5 @@ export const config = {
 
 // Export direct pour compatibilité
 export const BACKEND_URL = __DEV__ 
-  ? 'http://192.168.1.158:3001' // Port correct : 3001 au lieu de 3000
+  ? 'http://192.168.70.231:3001' // Port correct : 3001 au lieu de 3000
   : 'https://votre-domaine-production.com';
