@@ -82,8 +82,7 @@ export default StyleSheet.create({
 
   macetaCard: {
     flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#FFF',
+    alignItems: 'flex-start',
     borderRadius: 16,
     padding: 20,
     marginHorizontal: 20,
@@ -95,6 +94,7 @@ export default StyleSheet.create({
       width: 0,
       height: 2,
     },
+    width: '100%',
     elevation: 3,
     borderLeftWidth: 4,
     borderLeftColor: '#E0E0E0',
@@ -244,7 +244,8 @@ export default StyleSheet.create({
 
   macetaTextCol: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
+    paddingTop: 2,
   },
 
   // Styles génériques pour le texte (utilisés comme fallback)
@@ -348,6 +349,160 @@ export default StyleSheet.create({
   plantCardContent: {
     flex: 1,
     alignItems: 'center',
+  },
+
+  // Styles pour les états de chargement
+  loadingContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  loadingContainerPlants: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+  },
+
+  // Styles pour les notifications par défaut (aucune notification)
+  noNotificationCard: {
+    backgroundColor: '#F0FFF0',
+    borderLeftColor: '#32CD32',
+    borderLeftWidth: 4,
+    shadowColor: '#32CD32',
+    shadowOpacity: 0.1,
+  },
+
+  // Style pour la notification statique (pour matcher les dynamiques)
+  staticNotificationCard: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    backgroundColor: '#F0FFF0',
+    borderRadius: 16,
+    padding: 20,
+    marginBottom: 12,
+    shadowColor: '#32CD32',
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    elevation: 3,
+    borderLeftWidth: 4,
+    borderLeftColor: '#32CD32',
+  },
+
+  noNotificationIcon: {
+    backgroundColor: '#E6FFE6',
+    borderWidth: 2,
+    borderColor: '#90EE90',
+  },
+
+  noNotificationTitle: {
+    color: '#228B22',
+    fontSize: 17,
+    fontWeight: '700',
+    marginBottom: 6,
+    lineHeight: 22,
+  },
+
+  noNotificationSubtitle: {
+    color: '#006400',
+    fontSize: 14,
+    lineHeight: 18,
+    fontWeight: '400',
+  },
+
+  // Styles spécifiques pour les notifications dynamiques
+  dynamicNotificationCard: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    backgroundColor: '#FFF',
+    borderRadius: 16,
+    padding: 20,
+    marginBottom: 12,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    elevation: 3,
+    borderLeftWidth: 4,
+    borderLeftColor: '#E0E0E0',
+  },
+
+  dynamicNotificationIcon: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    marginRight: 16,
+    backgroundColor: '#F5F5F5',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  dynamicNotificationTextCol: {
+    flex: 1,
+    justifyContent: 'flex-start',
+    paddingTop: 2,
+  },
+
+  dynamicNotificationTitle: {
+    fontSize: 17,
+    fontWeight: '700',
+    color: '#333',
+    marginBottom: 6,
+    lineHeight: 22,
+  },
+  
+  dynamicNotificationSubtitle: {
+    fontSize: 14,
+    color: '#666',
+    lineHeight: 18,
+    fontWeight: '400',
+  },
+
+  // Styles pour les priorités des notifications
+  priorityIndicator: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    opacity: 0.8,
+    marginLeft: 8,
+  },
+
+  // Styles pour les icônes de notification
+  notificationIcon: {
+    fontSize: 24,
+  },
+
+  // Styles pour le scroll des notifications
+  notificationsScrollView: {
+    maxHeight: 200,
+    width: '100%',
+    paddingHorizontal: 20,
+  },
+
+  // Style pour le conteneur de la notification statique
+  staticNotificationContainer: {
+    width: '100%',
+    paddingHorizontal: 20,
+  },
+
+  // Style pour le titre des sections
+  sectionTitle: {
+    marginTop: 20,
+    marginBottom: 20,
+  },
+
+  // Style pour le conteneur des plantes
+  plantsScrollContainer: {
+    marginBottom: 20,
+  },
+
+  plantsRow: {
+    flexDirection: 'row',
   },
 
 });

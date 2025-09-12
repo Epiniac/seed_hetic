@@ -8,7 +8,6 @@ import { PlantSpecies } from '../../services/perenualApi';
 import { getDashboardPlants, removeDashboardPlant } from '../../services/dashboardPlantService';
 import { useAuth } from '../../contexts/AuthContext';
 import { getNotifications, markNotificationAsRead, getNotificationIcon, getNotificationColor, Notification } from '../../services/notificationService';
-import { simulateStatusChange } from '../../services/simulationService';
 
 // Interface pour les plantes du dashboard
 interface DashboardPlant {
@@ -72,7 +71,8 @@ export default function DashboardScreen() {
   const fetchNotifications = async () => {
     setLoadingNotifications(true);
     try {
-      const unreadNotifications = await getNotifications(true); // Seulement les non lues
+      const unreadNotifications = await getNotifications(true);
+      console.log('📱 NOTIFICATIONS:', JSON.stringify(unreadNotifications, null, 2));
       setNotifications(unreadNotifications);
     } catch (e) {
       console.error('Erreur lors du chargement des notifications:', e);
@@ -91,7 +91,6 @@ export default function DashboardScreen() {
   // Gestionnaire pour les notifications
   const handleNotificationPress = async (notification: Notification) => {
     try {
-      // Marquer la notification comme lue
       await markNotificationAsRead(notification._id);
       
       // Afficher les détails de la notification
@@ -118,224 +117,107 @@ export default function DashboardScreen() {
     }
   };
 
-  // Fonction pour tester les notifications (à supprimer en production)
-  const handleTestNotification = () => {
-    if (userPlants.length === 0) {
-      Alert.alert('Aucune plante', 'Vous devez avoir au moins une plante pour tester les notifications.');
-      return;
-    }
-    
-    const firstPlant = userPlants[0];
-    const plantId = firstPlant._id || firstPlant.id;
-    
-    if (!plantId) {
-      Alert.alert('Erreur', 'ID de plante introuvable.');
-      return;
-    }
-    
-    Alert.alert(
-      'Test de notifications système',
-      'Quel type de changement voulez-vous simuler ?',
-      [
-        {
-          text: 'Besoin d\'eau urgent',
-          onPress: async () => {
-            try {
-              await simulateStatusChange(plantId, 'drought');
-              Alert.alert('✅ Simulation réussie', 'La plante a maintenant besoin d\'eau urgent. Actualisez dans quelques secondes.');
-              setTimeout(() => {
-                fetchNotifications();
-              }, 2000);
-            } catch (error) {
-              console.error('Erreur simulation drought:', error);
-              Alert.alert('Erreur', `Impossible de simuler le changement: ${error instanceof Error ? error.message : 'Erreur inconnue'}`);
-            }
-          }
-        },
-        {
-          text: 'Légèrement sec',
-          onPress: async () => {
-            try {
-              await simulateStatusChange(plantId, 'moderate-dry');
-              Alert.alert('✅ Simulation réussie', 'La plante est légèrement sèche. Actualisez dans quelques secondes.');
-              setTimeout(() => {
-                fetchNotifications();
-              }, 2000);
-            } catch (error) {
-              console.error('Erreur simulation moderate-dry:', error);
-              Alert.alert('Erreur', `Impossible de simuler le changement: ${error instanceof Error ? error.message : 'Erreur inconnue'}`);
-            }
-          }
-        },
-        {
-          text: 'Température trop élevée',
-          onPress: async () => {
-            try {
-              await simulateStatusChange(plantId, 'temperature');
-              Alert.alert('✅ Simulation réussie', 'La température est maintenant trop élevée. Actualisez dans quelques secondes.');
-              setTimeout(() => {
-                fetchNotifications();
-              }, 2000);
-            } catch (error) {
-              console.error('Erreur simulation temperature:', error);
-              Alert.alert('Erreur', `Impossible de simuler le changement: ${error instanceof Error ? error.message : 'Erreur inconnue'}`);
-            }
-          }
-        },
-        {
-          text: 'Température trop basse',
-          onPress: async () => {
-            try {
-              await simulateStatusChange(plantId, 'cold');
-              Alert.alert('✅ Simulation réussie', 'La température est maintenant trop basse. Actualisez dans quelques secondes.');
-              setTimeout(() => {
-                fetchNotifications();
-              }, 2000);
-            } catch (error) {
-              console.error('Erreur simulation cold:', error);
-              Alert.alert('Erreur', `Impossible de simuler le changement: ${error instanceof Error ? error.message : 'Erreur inconnue'}`);
-            }
-          }
-        },
-        {
-          text: 'Retour aux conditions normales',
-          onPress: async () => {
-            try {
-              await simulateStatusChange(plantId, 'healthy');
-              Alert.alert('✅ Simulation réussie', 'La plante est maintenant en bonne santé.');
-              setTimeout(() => {
-                fetchNotifications();
-              }, 2000);
-            } catch (error) {
-              console.error('Erreur simulation healthy:', error);
-              Alert.alert('Erreur', `Impossible de simuler le changement: ${error instanceof Error ? error.message : 'Erreur inconnue'}`);
-            }
-          }
-        },
-        { text: 'Annuler', style: 'cancel' }
-      ]
-    );
-  };
-
   // Fonction pour obtenir les styles selon le type et la priorité de notification
   const getNotificationStyles = (type: string, priority: string) => {
-    // Styles de base pour chaque type
-    let cardStyle, iconBg, borderColor, titleColor, subtitleColor, shadowColor;
-
+    // Couleurs selon le type
+    let borderColor = '#32CD32';
+    let iconBg = '#E6FFE6';
+    let titleColor = '#228B22';
+    let subtitleColor = '#006400';
+    
     switch (type) {
       case 'arrosage':
-        cardStyle = { backgroundColor: '#F0F8FF' };
-        iconBg = '#E6F3FF';
         borderColor = '#1E90FF';
+        iconBg = '#E6F3FF';
         titleColor = '#1E90FF';
         subtitleColor = '#4682B4';
-        shadowColor = '#1E90FF';
         break;
       case 'temperature':
-        cardStyle = { backgroundColor: '#FFF5F5' };
-        iconBg = '#FFE4E1';
         borderColor = '#FF6347';
+        iconBg = '#FFE4E1';
         titleColor = '#DC143C';
         subtitleColor = '#B22222';
-        shadowColor = '#FF6347';
         break;
       case 'humidité':
-        cardStyle = { backgroundColor: '#F8F8FF' };
-        iconBg = '#F0E6FF';
         borderColor = '#9370DB';
+        iconBg = '#F0E6FF';
         titleColor = '#8A2BE2';
         subtitleColor = '#663399';
-        shadowColor = '#9370DB';
         break;
       case 'generale':
-        cardStyle = { backgroundColor: '#F0FFF0' };
-        iconBg = '#E6FFE6';
+      default:
         borderColor = '#32CD32';
+        iconBg = '#E6FFE6';
         titleColor = '#228B22';
         subtitleColor = '#006400';
-        shadowColor = '#32CD32';
-        break;
-      default:
-        cardStyle = { backgroundColor: '#FFF' };
-        iconBg = '#F5F5F5';
-        borderColor = '#E0E0E0';
-        titleColor = '#333';
-        subtitleColor = '#666';
-        shadowColor = '#000';
         break;
     }
 
-    // Ajustements selon la priorité
+    // Largeur de bordure selon la priorité
     let borderWidth = 4;
-    let shadowOpacity = 0.15;
-    
     switch (priority) {
       case 'élevé':
       case 'high':
         borderWidth = 6;
-        shadowOpacity = 0.25;
         break;
       case 'moyen':
       case 'medium':
         borderWidth = 4;
-        shadowOpacity = 0.15;
         break;
       case 'faible':
       case 'low':
         borderWidth = 3;
-        shadowOpacity = 0.1;
         break;
     }
 
     return {
-      cardStyle: {
-        ...cardStyle,
+      additionalCardStyle: {
         borderLeftColor: borderColor,
         borderLeftWidth: borderWidth,
-        shadowColor: shadowColor,
-        shadowOpacity: shadowOpacity,
+        shadowColor: borderColor,
       },
       iconStyle: {
         backgroundColor: iconBg,
         borderWidth: 2,
-        borderColor: borderColor + '80', // Ajout de transparence
+        borderColor: borderColor,
       },
-      titleColor,
-      subtitleColor,
+      titleStyle: {
+        color: titleColor,
+      },
+      subtitleStyle: {
+        color: subtitleColor,
+      },
     };
   };
 
   // Fonction pour rendre une notification
   const renderNotification = (notification: Notification) => {
+    console.log('🎨 RENDU DE NOTIFICATION:', {
+      id: notification._id,
+      title: notification.title,
+      message: notification.message,
+      type: notification.type,
+      priority: notification.priority
+    });
+    
     const icon = getNotificationIcon(notification.type);
-    const { cardStyle, iconStyle, titleColor, subtitleColor } = getNotificationStyles(notification.type, notification.priority);
+    const { additionalCardStyle, iconStyle, titleStyle, subtitleStyle } = getNotificationStyles(notification.type, notification.priority);
     
     return (
       <TouchableOpacity
         key={notification._id}
-        style={[styles.macetaCard, cardStyle]}
+        style={[styles.dynamicNotificationCard, additionalCardStyle]}
         onPress={() => handleNotificationPress(notification)}
       >
-        <View style={[styles.macetaImage, iconStyle]}>
-          <Text style={{ fontSize: 24 }}>{icon}</Text>
+        <View style={[styles.dynamicNotificationIcon, iconStyle]}>
+          <Text style={styles.notificationIcon}>{icon}</Text>
         </View>
-        <View style={styles.macetaTextCol}>
-          <Text style={[styles.macetaTitle, { color: titleColor }]}>
+        <View style={styles.dynamicNotificationTextCol}>
+          <Text style={[styles.dynamicNotificationTitle, titleStyle]}>
             {notification.title}
           </Text>
-          <Text style={[styles.macetaSubtitle, { color: subtitleColor }]}>
-            {notification.plant.name} - {notification.message}
-          </Text>
-        </View>
-        <View style={{ marginLeft: 8 }}>
-          <Text style={{ 
-            fontSize: 12, 
-            color: titleColor, 
-            fontWeight: 'bold',
-            opacity: 0.8
-          }}>
-            {notification.priority === 'élevé' || notification.priority === 'high' ? '⚡⚡⚡' : 
-             notification.priority === 'moyen' || notification.priority === 'medium' ? '⚡⚡' : '⚡'}
+          <Text style={[styles.dynamicNotificationSubtitle, subtitleStyle]}>
+            {notification.message}
           </Text>
         </View>
       </TouchableOpacity>
@@ -406,12 +288,6 @@ export default function DashboardScreen() {
             <Text style={styles.headerSubtitle}>La meilleure activité à faire</Text>
           </View>
         </View>
-        <TouchableOpacity 
-          onPress={handleTestNotification}
-          style={{ marginLeft: 8 }}
-        >
-          <Text style={{ fontSize: 16, color: '#26CB66' }}>🧪</Text>
-        </TouchableOpacity>
         <Image source={require('../../assets/images/Notification.jpg')} resizeMode="contain" />
       </View>
 
@@ -420,58 +296,40 @@ export default function DashboardScreen() {
 
       {/* Notifications dynamiques */}
       {loadingNotifications ? (
-        <View style={[styles.macetaCard, { justifyContent: 'center', alignItems: 'center' }]}>
+        <View style={[styles.macetaCard, styles.loadingContainer]}>
           <ActivityIndicator size="small" color="#26CB66" />
           <Text style={styles.macetaSubtitle}>Chargement des notifications...</Text>
         </View>
       ) : notifications.length > 0 ? (
         <ScrollView 
-          style={{ maxHeight: 120 }} 
+          style={styles.notificationsScrollView} 
           showsVerticalScrollIndicator={false}
           nestedScrollEnabled={true}
         >
           {notifications.slice(0, 2).map((notification) => renderNotification(notification))}
         </ScrollView>
       ) : (
-        <View style={[styles.macetaCard, { 
-          backgroundColor: '#F0FFF0', 
-          borderLeftColor: '#32CD32', 
-          borderLeftWidth: 4,
-          shadowColor: '#32CD32',
-          shadowOpacity: 0.1 
-        }]}>
-          <View style={[styles.macetaImage, { 
-            backgroundColor: '#E6FFE6',
-            borderWidth: 2,
-            borderColor: '#90EE90'
-          }]}>
-            <Text style={{ fontSize: 24 }}>✅</Text>
-          </View>
-          <View style={styles.macetaTextCol}>
-            <Text style={[styles.macetaTitle, { color: '#228B22' }]}>
-              Toutes vos plantes sont en bonne santé
-            </Text>
-            <Text style={[styles.macetaSubtitle, { color: '#006400' }]}>
-              Vos plantes sont épanouies et bien entretenues. Continuez ce bon travail !
-            </Text>
-          </View>
-          <View style={{ marginLeft: 8 }}>
-            <Text style={{ 
-              fontSize: 12, 
-              color: '#228B22', 
-              fontWeight: 'bold',
-              opacity: 0.8
-            }}>
-              💚
-            </Text>
+        <View style={styles.staticNotificationContainer}>
+          <View style={styles.staticNotificationCard}>
+            <View style={[styles.macetaImage, styles.noNotificationIcon]}>
+              <Text style={styles.notificationIcon}>✅</Text>
+            </View>
+            <View style={styles.macetaTextCol}>
+              <Text style={[styles.macetaTitle, styles.noNotificationTitle]}>
+                Toutes vos plantes sont en bonne santé
+              </Text>
+              <Text style={[styles.macetaSubtitle, styles.noNotificationSubtitle]}>
+                Vos plantes sont épanouies et bien entretenues. Continuez ce bon travail !
+              </Text>
+            </View>
           </View>
         </View>
       )}
 
       {/* Plantes statiques + dynamiques */}
-      <Text style={[styles.headerTitle, { marginTop: 20, marginBottom: 20 }]}>Votre sélection de plantes</Text>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 20 }}>
-        <View style={{ flexDirection: 'row' }}>
+      <Text style={[styles.headerTitle, styles.sectionTitle]}>Votre sélection de plantes</Text>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.plantsScrollContainer}>
+        <View style={styles.plantsRow}>
           {/* Plantes statiques */}
           {staticPlants.map((plant) => (
             <TouchableOpacity
@@ -491,11 +349,11 @@ export default function DashboardScreen() {
 
           {/* Plantes dynamiques */}
           {loadingPlants ? (
-            <View style={{ justifyContent: 'center', alignItems: 'center', paddingHorizontal: 20 }}>
+            <View style={styles.loadingContainerPlants}>
               <ActivityIndicator size="large" color="#26CB66" />
             </View>
           ) : userPlants.length === 0 ? (
-            <View style={{ justifyContent: 'center', alignItems: 'center', paddingHorizontal: 20 }}>
+            <View style={styles.loadingContainerPlants}>
               <Text style={styles.headerSubtitle}>Aucune plante en pot</Text>
             </View>
           ) : (
