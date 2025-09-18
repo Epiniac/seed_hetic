@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import EditScreenInfo from '@/components/EditScreenInfo';
+//import EditScreenInfo from '@/components/EditScreenInfo';
 import { Text, View } from '@/components/Themed';
 import styles from '../styles/index.styles';
 import { useRouter } from 'expo-router';
