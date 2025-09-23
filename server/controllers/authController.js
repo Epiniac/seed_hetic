@@ -7,7 +7,6 @@ const generateToken = (userId) => {
 };
 
 const authController = {
-  // Inscription
   register: async (req, res) => {
     try {
       const errors = validationResult(req);
@@ -17,17 +16,14 @@ const authController = {
 
       const { email, password, name } = req.body;
 
-      // Vérifier si l'utilisateur existe déjà
       const existingUser = await User.findOne({ email });
       if (existingUser) {
         return res.status(400).json({ message: 'Cet email est déjà utilisé' });
       }
 
-      // Créer nouvel utilisateur
       const user = new User({ email, password, name });
       await user.save();
 
-      // Générer token
       const token = generateToken(user._id);
 
       res.status(201).json({
@@ -45,7 +41,6 @@ const authController = {
     }
   },
 
-  // Connexion
   login: async (req, res) => {
     try {
       const errors = validationResult(req);
@@ -55,19 +50,16 @@ const authController = {
 
       const { email, password } = req.body;
 
-      // Vérifier si l'utilisateur existe
       const user = await User.findOne({ email });
       if (!user) {
         return res.status(400).json({ message: 'Identifiants invalides' });
       }
 
-      // Vérifier le mot de passe
       const isMatch = await user.comparePassword(password);
       if (!isMatch) {
         return res.status(400).json({ message: 'Identifiants invalides' });
       }
 
-      // Générer token
       const token = generateToken(user._id);
 
       res.json({
@@ -85,7 +77,6 @@ const authController = {
     }
   },
 
-  // Récupérer profil utilisateur
   getProfile: async (req, res) => {
     try {
       const user = await User.findById(req.user.id).select('-password');
@@ -95,7 +86,6 @@ const authController = {
     }
   },
 
-  // Mettre à jour l'avatar de l'utilisateur
   updateAvatar: async (req, res) => {
     try {
       console.log('📸 Début mise à jour avatar pour utilisateur:', req.user.id);

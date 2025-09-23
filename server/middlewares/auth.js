@@ -16,7 +16,6 @@ const auth = async (req, res, next) => {
       return res.status(401).json({ message: 'Token invalide' });
     }
 
-    // Assurer que req.user a bien un id
     req.user = {
       id: user._id,
       email: user.email,

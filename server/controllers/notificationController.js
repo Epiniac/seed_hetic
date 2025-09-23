@@ -1,7 +1,6 @@
 const Notification = require('../models/Notification');
 
 const notificationController = {
-  // Récupérer toutes les notifications de l'utilisateur
   getNotifications: async (req, res) => {
     try {
       const { unreadOnly } = req.query;
@@ -22,7 +21,6 @@ const notificationController = {
     }
   },
 
-  // Marquer une notification comme lue
   markAsRead: async (req, res) => {
     try {
       const notification = await Notification.findOneAndUpdate(
@@ -41,7 +39,6 @@ const notificationController = {
     }
   },
 
-  // Marquer toutes les notifications comme lues
   markAllAsRead: async (req, res) => {
     try {
       await Notification.updateMany(

@@ -3,11 +3,6 @@ const router = express.Router();
 const User = require('../models/User');
 const auth = require('../middlewares/auth');
 
-/**
- * @route   GET /api/users/library
- * @desc    Récupérer la bibliothèque de plantes de l'utilisateur
- * @access  Private
- */
 router.get('/library', auth, async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select('library');
@@ -16,7 +11,6 @@ router.get('/library', auth, async (req, res) => {
       return res.status(404).json({ message: 'Utilisateur non trouvé' });
     }
     
-    // Formater les données pour le frontend
     const library = user.library.map(item => ({
       id: item.plantId,
       common_name: item.plantData.common_name,
@@ -35,11 +29,6 @@ router.get('/library', auth, async (req, res) => {
   }
 });
 
-/**
- * @route   POST /api/users/library
- * @desc    Ajouter une plante à la bibliothèque de l'utilisateur
- * @access  Private
- */
 router.post('/library', auth, async (req, res) => {
   try {
     const { plantId, plantData } = req.body;
@@ -53,14 +42,12 @@ router.post('/library', auth, async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: 'Utilisateur non trouvé' });
     }
-    
-    // Vérifier si la plante n'est pas déjà dans la bibliothèque
+ 
     const existingPlant = user.library.find(item => item.plantId === plantId);
     if (existingPlant) {
       return res.status(409).json({ message: 'Plante déjà dans la bibliothèque' });
     }
-    
-    // Ajouter la plante à la bibliothèque
+
     user.library.push({
       plantId,
       plantData: {
@@ -89,11 +76,6 @@ router.post('/library', auth, async (req, res) => {
   }
 });
 
-/**
- * @route   DELETE /api/users/library/:plantId
- * @desc    Supprimer une plante de la bibliothèque de l'utilisateur
- * @access  Private
- */
 router.delete('/library/:plantId', auth, async (req, res) => {
   try {
     const { plantId } = req.params;
@@ -103,8 +85,7 @@ router.delete('/library/:plantId', auth, async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: 'Utilisateur non trouvé' });
     }
-    
-    // Retirer la plante de la bibliothèque
+
     const initialLength = user.library.length;
     user.library = user.library.filter(item => item.plantId !== plantId);
     
@@ -121,11 +102,6 @@ router.delete('/library/:plantId', auth, async (req, res) => {
   }
 });
 
-/**
- * @route   DELETE /api/users/library
- * @desc    Vider complètement la bibliothèque de l'utilisateur
- * @access  Private
- */
 router.delete('/library', auth, async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
@@ -144,11 +120,6 @@ router.delete('/library', auth, async (req, res) => {
   }
 });
 
-/**
- * @route   GET /api/users/library/count
- * @desc    Obtenir le nombre de plantes dans la bibliothèque
- * @access  Private
- */
 router.get('/library/count', auth, async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select('library');
@@ -164,11 +135,6 @@ router.get('/library/count', auth, async (req, res) => {
   }
 });
 
-/**
- * @route   GET /api/users/library/check/:plantId
- * @desc    Vérifier si une plante est dans la bibliothèque
- * @access  Private
- */
 router.get('/library/check/:plantId', auth, async (req, res) => {
   try {
     const { plantId } = req.params;
