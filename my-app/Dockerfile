@@ -13,6 +13,6 @@ RUN npm ci
 
 COPY . .
 
-EXPOSE 8081 19000 19001 19002
+EXPOSE 8081
 
-CMD ["npx", "expo", "start", "--lan"]
+CMD ["npx", "expo", "start", "--tunnel"]
