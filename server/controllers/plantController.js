@@ -1,15 +1,12 @@
 const Plant = require('../models/Plant');
-// const PlantCatalog = require('../models/PlantCatalog');
 const Notification = require('../models/Notification');
 
 const plantController = {
-  // Récupérer toutes les plantes de l'utilisateur
   getUserPlants: async (req, res) => {
     try {
       const { category, status, search } = req.query;
       let query = { owner: req.user.id };
 
-      // Filtres
       if (category) query.category = category;
       if (status) query.status = status;
       if (search) {
@@ -26,7 +23,6 @@ const plantController = {
     }
   },
 
-  // Récupérer une plante spécifique
   getPlant: async (req, res) => {
     try {
       const plant = await Plant.findOne({ 
@@ -44,7 +40,6 @@ const plantController = {
     }
   },
 
-  // Ajouter une nouvelle plante
   addPlant: async (req, res) => {
     try {
       const plantData = {
@@ -52,7 +47,6 @@ const plantController = {
         owner: req.user.id
       };
 
-      // Ajouter des valeurs par défaut pour careInstructions si vides
       if (!plantData.careInstructions || Object.keys(plantData.careInstructions).length === 0) {
         plantData.careInstructions = {
           watering: {
@@ -85,7 +79,6 @@ const plantController = {
     }
   },
 
-  // Mettre à jour une plante
   updatePlant: async (req, res) => {
     try {
       const plant = await Plant.findOneAndUpdate(
@@ -107,7 +100,6 @@ const plantController = {
     }
   },
 
-  // Supprimer une plante
   deletePlant: async (req, res) => {
     try {
       const plant = await Plant.findOneAndDelete({ 
@@ -119,7 +111,6 @@ const plantController = {
         return res.status(404).json({ message: 'Plante non trouvée' });
       }
 
-      // Supprimer les notifications liées
       await Notification.deleteMany({ plant: req.params.id });
 
       res.json({ message: 'Plante supprimée avec succès' });
@@ -128,30 +119,26 @@ const plantController = {
     }
   },
 
-  // Mettre à jour les statistiques d'une plante
   updatePlantStats: async (req, res) => {
     try {
       const { temperature, humidity, soilMoisture, lightLevel } = req.body;
       
       const updateData = {};
-      
-      // Ajouter température si fournie
+
       if (temperature) {
         updateData['currentStats.temperature'] = {
           ...temperature,
           lastUpdated: new Date()
         };
       }
-      
-      // Ajouter humidité si fournie
+
       if (humidity) {
         updateData['currentStats.humidity'] = {
           ...humidity,
           lastUpdated: new Date()
         };
       }
-      
-      // Ajouter humidité du sol si fournie
+
       if (soilMoisture) {
         updateData['currentStats.soilMoisture'] = {
           ...soilMoisture,
@@ -159,7 +146,6 @@ const plantController = {
         };
       }
       
-      // Ajouter niveau de lumière si fourni
       if (lightLevel) {
         updateData['currentStats.lightLevel'] = {
           ...lightLevel,
@@ -177,7 +163,6 @@ const plantController = {
         return res.status(404).json({ message: 'Plante non trouvée' });
       }
 
-      // S'assurer que la plante a des careInstructions par défaut
       if (!plant.careInstructions || Object.keys(plant.careInstructions).length === 0) {
         plant.careInstructions = {
           watering: {
@@ -198,7 +183,6 @@ const plantController = {
         await plant.save();
       }
 
-      // Vérifier si des alertes doivent être créées
       await checkPlantAlerts(plant);
 
       res.json({
@@ -212,12 +196,10 @@ const plantController = {
   },
 };
 
-// Fonction pour vérifier les alertes
 async function checkPlantAlerts(plant) {
   try {
     const alerts = [];
 
-    // Vérifier l'humidité du sol ou l'humidité générale
     const humidity = plant.currentStats.soilMoisture || plant.currentStats.humidity;
     if (humidity && humidity.value < 30) {
       const messages = [
@@ -240,7 +222,6 @@ async function checkPlantAlerts(plant) {
         actionRequired: true
       });
     } else if (humidity && humidity.value < 50) {
-      // Notification préventive pour humidité modérément basse
       const titles = [
         'Surveillance du niveau d\'hydratation',
         'Préparation d\'arrosage recommandée',
@@ -256,7 +237,6 @@ async function checkPlantAlerts(plant) {
       });
     }
 
-    // Vérifier la température
     if (plant.currentStats.temperature && 
         plant.careInstructions && 
         plant.careInstructions.temperature) {
@@ -310,15 +290,12 @@ async function checkPlantAlerts(plant) {
       }
     }
 
-    // Ajouter des notifications de bien-être général
     if (alerts.length === 0) {
-      // Parfois ajouter des conseils positifs
-      const shouldAddTip = Math.random() < 0.3; // 30% de chance
+      const shouldAddTip = Math.random() < 0.3;
       if (shouldAddTip) {
         const hour = new Date().getHours();
         let wellnessTips;
-        
-        // Messages selon l'heure de la journée
+
         if (hour >= 6 && hour < 12) {
           wellnessTips = [
             `� Bonjour ! Votre ${plant.name} démarre bien la journée !`,
@@ -349,7 +326,6 @@ async function checkPlantAlerts(plant) {
       }
     }
 
-    // Créer les notifications
     for (const alert of alerts) {
       await Notification.create({
         user: plant.owner,
@@ -358,7 +334,6 @@ async function checkPlantAlerts(plant) {
       });
     }
 
-  // Mettre à jour le statut de la plante
   if (alerts.length > 0) {
     const hasHighPriority = alerts.some(alert => alert.priority === 'high');
     plant.status = hasHighPriority ? 'critique' : 'besoin attention';

@@ -23,10 +23,9 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: null
   },
-  // Bibliothèque de plantes de l'utilisateur
   library: [{
     plantId: {
-      type: String, // ID de la plante (peut être ObjectId MongoDB ou ID externe)
+      type: String,
       required: true
     },
     plantData: {
@@ -50,22 +49,11 @@ const userSchema = new mongoose.Schema({
       default: Date.now
     }
   }]
-//   preferences: {
-//     notifications: {
-//       type: Boolean,
-//       default: true
-//     },
-//     theme: {
-//       type: String,
-//       enum: ['light', 'dark'],
-//       default: 'light'
-//     }
-//   }
+
 }, {
   timestamps: true
 });
 
-// Hash password avant sauvegarde
 userSchema.pre('save', async function(next) {
   if (!this.isModified('password')) return next();
   
@@ -78,7 +66,6 @@ userSchema.pre('save', async function(next) {
   }
 });
 
-// Méthode pour vérifier le mot de passe
 userSchema.methods.comparePassword = async function(candidatePassword) {
   return await bcrypt.compare(candidatePassword, this.password);
 };

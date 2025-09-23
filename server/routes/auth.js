@@ -5,7 +5,6 @@ const auth = require('../middlewares/auth');
 
 const router = express.Router();
 
-// Validation rules
 const registerValidation = [
   body('email').isEmail().normalizeEmail(),
   body('password').isLength({ min: 6 }),

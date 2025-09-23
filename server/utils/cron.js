@@ -2,7 +2,6 @@ const cron = require('node-cron');
 const Plant = require('../models/Plant');
 const Notification = require('../models/Notification');
 
-// Vérifier les plantes qui ont besoin d'attention chaque jour à 8h
 cron.schedule('0 8 * * *', async () => {
   try {
     console.log('Vérification quotidienne des plantes...');
@@ -10,26 +9,24 @@ cron.schedule('0 8 * * *', async () => {
     const plants = await Plant.find({}).populate('owner');
     
     for (const plant of plants) {
-      // Vérifier l'humidité
       if (plant.currentStats?.humidity?.value && plant.careInstructions?.humidity?.optimal) {
         const currentHumidity = plant.currentStats.humidity.value;
         const optimalHumidity = plant.careInstructions.humidity.optimal;
         const humidityDifference = Math.abs(currentHumidity - optimalHumidity);
-        const humidityTolerance = 10; // Tolérance par défaut de 10%
+        const humidityTolerance = 10;
         
         if (humidityDifference > humidityTolerance) {
           let message;
-          let priority = 'moyen'; // Changé de 'medium' à 'moyen'
+          let priority = 'moyen'; 
           
           if (currentHumidity < optimalHumidity) {
             message = `L'humidité de votre ${plant.name} est trop faible (${currentHumidity}%). Optimal: ${optimalHumidity}%`;
           } else {
             message = `L'humidité de votre ${plant.name} est trop élevée (${currentHumidity}%). Optimal: ${optimalHumidity}%`;
           }
-          
-          // Priorité haute si l'écart est très important
+
           if (humidityDifference > humidityTolerance * 2) {
-            priority = 'élevé'; // Changé de 'high' à 'élevé'
+            priority = 'élevé'; 
           }
           
           await Notification.create({
@@ -44,8 +41,7 @@ cron.schedule('0 8 * * *', async () => {
           console.log(`Notification humidité créée pour ${plant.name}`);
         }
       }
-      
-      // Vérifier la température
+
       if (plant.currentStats?.temperature?.value && 
           plant.careInstructions?.temperature?.min && 
           plant.careInstructions?.temperature?.max) {
@@ -56,7 +52,7 @@ cron.schedule('0 8 * * *', async () => {
         
         let temperatureAlert = false;
         let message;
-        let priority = 'élevé'; // Changé de 'high' à 'élevé'
+        let priority = 'élevé';
         
         if (currentTemp < minTemp) {
           temperatureAlert = true;
@@ -87,7 +83,6 @@ cron.schedule('0 8 * * *', async () => {
   }
 });
 
-// Fonction pour tester manuellement 
 const testNotifications = async () => {
   try {
     console.log('Test manuel des notifications...');

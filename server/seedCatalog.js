@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const PlantCatalog = require('./models/PlantCatalog');
 require('dotenv').config();
 
-// Données d'exemple pour le catalogue de plantes
 const samplePlants = [
   {
     name: "Monstera Deliciosa",
@@ -232,11 +231,8 @@ const samplePlants = [
 
 async function seedDatabase() {
   try {
-    // Connexion à la base de données
     await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/seed_hetic');
     console.log('✅ Connexion à MongoDB réussie');
-
-    // Vérifier s'il y a déjà des plantes dans le catalogue
     const existingCount = await PlantCatalog.countDocuments();
     console.log(`📊 Nombre de plantes existantes dans le catalogue: ${existingCount}`);
 
@@ -245,15 +241,9 @@ async function seedDatabase() {
       process.exit(0);
     }
 
-    // Supprimer les plantes existantes pour recommencer à zéro (optionnel)
-    // await PlantCatalog.deleteMany({});
-    // console.log('🗑️  Plantes existantes supprimées');
-
-    // Ajouter les nouvelles plantes
     console.log('🌱 Ajout des plantes d\'exemple...');
     
     for (const plantData of samplePlants) {
-      // Vérifier si la plante existe déjà
       const existing = await PlantCatalog.findOne({ 
         $or: [
           { name: plantData.name },
@@ -271,8 +261,7 @@ async function seedDatabase() {
     }
 
     console.log('\n🎉 Peuplement terminé avec succès !');
-    
-    // Afficher un résumé
+
     const finalCount = await PlantCatalog.countDocuments();
     console.log(`📊 Total de plantes dans le catalogue: ${finalCount}`);
 
@@ -282,8 +271,6 @@ async function seedDatabase() {
     process.exit(1);
   }
 }
-
-// Lancer le script
 if (require.main === module) {
   seedDatabase();
 }

@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const sensorDataService = require('../services/sensorDataService.js');
 
-// Route pour recevoir les données des capteurs de la passerelle
 router.post('/sensor-data', (req, res) => {
     try {
         const { type, value, source, timestamp } = req.body;
@@ -13,8 +12,7 @@ router.post('/sensor-data', (req, res) => {
         console.log(`   Source: ${source}`);
         console.log(`   Timestamp: ${timestamp}`);
         console.log('─'.repeat(50));
-        
-        // Sauvegarder dans le service de données
+
         sensorDataService.addSensorData(type, value, source);
         
         res.status(200).json({ 
@@ -28,7 +26,6 @@ router.post('/sensor-data', (req, res) => {
     }
 });
 
-// GET /api/sensors/latest - Récupérer les dernières données des capteurs
 router.get('/latest', (req, res) => {
     try {
         const data = sensorDataService.getLatestData();
@@ -51,9 +48,8 @@ router.get('/latest', (req, res) => {
 });
 router.get('/sensor-data/latest', async (req, res) => {
     try {
-        // Proxy vers la passerelle
         const response = await fetch('http://192.168.100.54:8080/api/sensor-data/latest', {
-            timeout: 5000 // 5 secondes de timeout
+            timeout: 5000
         });
         
         if (!response.ok) {
@@ -76,10 +72,8 @@ router.get('/sensor-data/latest', async (req, res) => {
     }
 });
 
-// Route pour récupérer les dernières données des capteurs (ancienne version, gardée pour compatibilité)
 router.get('/sensor-data/latest-old', (req, res) => {
     try {
-        // TODO: Récupérer les dernières données de la base
         res.status(200).json({
             temperature: 26.5,
             humidity: 52.3,

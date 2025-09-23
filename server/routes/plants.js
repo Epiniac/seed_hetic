@@ -4,10 +4,8 @@ const auth = require('../middlewares/auth');
 
 const router = express.Router();
 
-// Toutes les routes nécessitent une authentification
 router.use(auth);
 
-// Routes CRUD pour les plantes
 router.get('/', plantController.getUserPlants);
 router.get('/:id', plantController.getPlant);
 router.post('/', plantController.addPlant);
