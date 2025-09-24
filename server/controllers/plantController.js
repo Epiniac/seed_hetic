@@ -185,73 +185,141 @@ const plantController = {
 };
 
 async function checkPlantAlerts(plant) {
-  const alerts = [];
+  try {
+    const alerts = [];
 
-  if (plant.currentStats.temperature && plant.careInstructions.temperature) {
-    const temp = plant.currentStats.temperature.value;
-    const { min, max } = plant.careInstructions.temperature;
-    
-    if (temp < min || temp > max) {
-      alerts.push({
-        type: 'Temperature',
-        title: 'Température inadéquate',
-        message: `La température de la plante ${plant.name} est de ${temp}°C. La plage recommandée: ${min}-${max}°C`,
-      });
+    // Vérifier l'humidité du sol ou l'humidité générale
+    // Vérifier la humiérature
+    if (plant.currentStats.humidity && 
+        plant.careInstructions && 
+        plant.careInstructions.humidity) {
+      const humi = plant.currentStats.humidity.value;
+      const { min, max } = plant.careInstructions.humidity;
+      
+      if (min && max && (humi < min || humi > max)) {
+        let humiMessage;
+        let humiTitle;
+        let humiPriority = 'élevé';
+        
+        if (humi < min) {
+          const messages = [
+            `Votre ${plant.name} a soif ! L'humidité est à (${humi}°C). La plage recommandée : ${min}%.`,
+            `Attention : votre ${plant.name} montre des signes deshydratation : ${humi}°C, minimum requis : ${min}°C.`,
+            `Alerte arrosage ! Votre ${plant.name} a besoin d'eau. Humidité critique : ${humi}%.`
+          ];
+          
+          const titles = [
+            'Votre plante a besoin d\'eau immédiatement',
+            'Niveau d\'hydratation critique détecté',
+            'Arrosage urgent requis pour votre plante'
+          ];
+          
+          humiMessage = messages[Math.floor(Math.random() * messages.length)];
+          humiTitle = titles[Math.floor(Math.random() * titles.length)];
+        } else {
+          const messages = [
+            `Humidité trop élevée pour votre ${plant.name} (${humi}%) ! Maximum recommandée :${max}°C.`,
+            `Attention ! Votre ${plant.name} souffre d'excès d'humidité (${humi})°C. Maximum recommandé : ${max}°C.`,
+            `${plant.name} risque la maladie à ${humi}°C.`
+          ];
+          
+          const titles = [
+            'Humidité excessive détectée',
+            'Votre plante souffre d\'excès d\'humidité',
+            'Risque de moisissure pour votre plante'
+          ];
+          
+          humiMessage = messages[Math.floor(Math.random() * messages.length)];
+          humiTitle = titles[Math.floor(Math.random() * titles.length)];
+        }
+        
+        alerts.push({
+          type: 'humidity',
+          title: humiTitle,
+          message: humiMessage,
+          priority: humiPriority,
+          actionRequired: true
+        });
+      }
     }
-  }
 
-  if (plant.currentStats.humidity && plant.careInstructions.humidity) {
-    const currentHumidity = plant.currentStats.humidity.value;
-    const { min: minHumidity, max: maxHumidity } = plant.careInstructions.humidity;
-    
-    if (currentHumidity < minHumidity || currentHumidity > maxHumidity) {
-      alerts.push({
-        type: 'Humidité',
-        title: 'Humidité',
-        message: `L'humidité de la plante ${plant.name} est de ${currentHumidity}%. La plage recommandée: ${minHumidity}-${maxHumidity}%`,
-      });
+    // Vérifier la température
+    if (plant.currentStats.temperature && 
+        plant.careInstructions && 
+        plant.careInstructions.temperature) {
+      const temp = plant.currentStats.temperature.value;
+      const { min, max } = plant.careInstructions.temperature;
+      
+      if (min && max && (temp < min || temp > max)) {
+        let tempMessage;
+        let tempTitle;
+        let tempPriority = 'élevé';
+        
+        if (temp < min) {
+          const messages = [
+            `Il fait trop froid pour votre ${plant.name} (${temp}°C). Température recommandée : ${min}-${max}°C.`,
+            `Votre ${plant.name} a froid ! Température actuelle : ${temp}°C, minimum requis : ${min}°C.`,
+            `${plant.name} risque de souffrir à ${temp}°C. Rapprochez-la d'une source de chaleur.`
+          ];
+          
+          const titles = [
+            'Température trop basse pour votre plante',
+            'Risque de gel détecté dans l\'environnement',
+            'Votre plante souffre du froid ambiant'
+          ];
+          
+          tempMessage = messages[Math.floor(Math.random() * messages.length)];
+          tempTitle = titles[Math.floor(Math.random() * titles.length)];
+        } else {
+          const messages = [
+            `Il fait trop chaud pour votre ${plant.name} (${temp}°C) ! Température recommandée : ${min}-${max}°C.`,
+            `Attention canicule ! Votre ${plant.name} souffre à ${temp}°C. Maximum recommandé : ${max}°C.`,
+            `${plant.name} risque la surchauffe à ${temp}°C. Trouvez-lui un endroit plus frais.`
+          ];
+          
+          const titles = [
+            'Température excessive détectée dans la zone',
+            'Votre plante souffre de la chaleur',
+            'Surchauffe dangereuse pour votre plante'
+          ];
+          
+          tempMessage = messages[Math.floor(Math.random() * messages.length)];
+          tempTitle = titles[Math.floor(Math.random() * titles.length)];
+        }
+        
+        alerts.push({
+          type: 'temperature',
+          title: tempTitle,
+          message: tempMessage,
+          priority: tempPriority,
+          actionRequired: true
+        });
+      }
     }
-  }
-
-  for (const alert of alerts) {
-    try {
+    
+    // Créer les notifications
+    for (const alert of alerts) {
       await Notification.create({
         user: plant.owner,
         plant: plant._id,
-        type: alert.type,
-        title: alert.title,
-        message: alert.message,
-        actionRequired: true 
+        ...alert
       });
-    } catch (error) {
-      console.error('Erreur lors de la création de la notification:', error);
     }
-  }
 
-  if (alerts.length > 0) {
-    const hasCriticalAlert = alerts.some(alert => 
-      alert.type === 'Humidité' || 
-      (alert.type === 'Temperature' && plant.currentStats.temperature && 
-       (plant.currentStats.temperature.value < 0 || plant.currentStats.temperature.value > 30))
-    );
-    
-    plant.status = hasCriticalAlert ? 'critical' : 'needs-attention';
-    
-    try {
+    // Mettre à jour le statut de la plante
+    if (alerts.length > 0) {
+      const hasHighPriority = alerts.some(alert => alert.priority === 'élevé');
+      plant.status = hasHighPriority ? 'critique' : 'besoin attention';
       await plant.save();
-    } catch (error) {
-      console.error('Erreur lors de la mise à jour du statut de la plante:', error);
-    }
-  } else {
-    plant.status = 'healthy';
-    try {
+    } else {
+      // Si pas d'alertes, remettre en bonne santé
+      plant.status = 'bonne sante';
       await plant.save();
-    } catch (error) {
-      console.error('Erreur lors de la mise à jour du statut de la plante:', error);
     }
+  } catch (error) {
+    console.error('Erreur dans checkPlantAlerts:', error);
+    // Ne pas faire planter le processus principal
   }
-  
-  return alerts;
 }
 
 module.exports = plantController;

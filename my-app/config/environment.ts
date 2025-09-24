@@ -3,7 +3,7 @@ export const config = {
   // URL de votre serveur backend
   // Pour le développement local, utilisez l'IP de votre machine ou localhost
   API_BASE_URL: __DEV__ 
-    ? 'http://192.168.1.15:5000/api' // IP locale de votre machine
+    ? 'http://192.168.1.20:5000/api' // IP locale de votre machine
     : 'https://votre-domaine-production.com/api',
     
   // Autres configurations

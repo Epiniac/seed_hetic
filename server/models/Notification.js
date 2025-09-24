@@ -13,7 +13,7 @@ const notificationSchema = new mongoose.Schema({
   },
   type: {
     type: String,
-    enum: ['arrosage', 'temperature', 'humidité', 'generale'],
+    enum: ['arrosage', 'temperature', 'humidity', 'generale'],
     required: true
   },
   title: {
