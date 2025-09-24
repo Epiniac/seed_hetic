@@ -10,6 +10,7 @@ router.get('/', plantController.getUserPlants);
 router.get('/:id', plantController.getPlant);
 router.post('/', plantController.addPlant);
 router.put('/:id', plantController.updatePlant);
+router.patch('/:id', plantController.updatePlant);
 router.delete('/:id', plantController.deletePlant);
 router.patch('/:id/stats', plantController.updatePlantStats);
 

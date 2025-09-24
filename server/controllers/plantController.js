@@ -121,7 +121,6 @@ const plantController = {
     }
   },
 
- 
   updatePlantStats: async (req, res) => {
     try {
       const { temperature, humidity, soilMoisture, lightLevel } = req.body;
