@@ -1,0 +1,14 @@
+services:
+  backend:
+    build: ./server
+    ports:
+      - "3000:3000"
+  frontend:
+    build: ./my-app
+    ports:
+      - "8081:8081"
+    environment:
+      - EXPO_NO_INTERACTIVE=false
+    stdin_open: true
+    tty: true
+    command: ["npx", "expo", "start", "--tunnel"]

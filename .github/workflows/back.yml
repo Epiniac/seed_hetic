@@ -31,13 +31,12 @@ jobs:
         working-directory: server
         run: npm ci
 
-      - name: Lint backend
+      - name: Run ESLint
         if: steps.check_back.outputs.exists == 'true'
         working-directory: server
-        run: npm run lint
+        run: npx eslint . --max-warnings=0
 
       - name: Run tests
         if: steps.check_back.outputs.exists == 'true'
         working-directory: server
         run: npm test
-
