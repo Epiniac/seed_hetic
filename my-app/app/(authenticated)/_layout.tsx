@@ -61,7 +61,7 @@ export default function AuthenticatedTabLayout() {
           options={{
             tabBarIcon: ({ color }) => (
               <Image 
-                source={require('@/assets/images/Files_2.png')} 
+                source={require('@/assets/images/camera.png')} 
                 style={{ width: 28, height: 28, tintColor: color }} 
                 resizeMode="contain" 
                 />

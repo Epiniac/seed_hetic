@@ -77,12 +77,20 @@ export default function AiDetect() {
         if (result.success) {
           setAnalysisResult(result.analysis);
           
-          // Afficher une alerte avec le résultat
-          const status = result.analysis.is_healthy ? 'En bonne santé' : 'Malade';
-          Alert.alert(
-            'Résultat de l\'analyse',
-            `${status}\nConfiance: ${result.analysis.confidence_percentage}%`
-          );
+          // Vérifier si le statut est uncertain ou si la confiance est à 0
+          if (result.analysis.status === 'uncertain' || result.analysis.confidence === 0) {
+            Alert.alert(
+              'Résultat de l\'analyse',
+              'Aucune plante trouvée'
+            );
+          } else {
+            // Afficher une alerte avec le résultat
+            const status = result.analysis.is_healthy ? 'En bonne santé' : 'Malade';
+            Alert.alert(
+              'Résultat de l\'analyse',
+              `${status}\nConfiance: ${result.analysis.confidence_percentage}%`
+            );
+          }
         } else {
           Alert.alert('Erreur', result.error || 'Impossible d\'analyser la plante');
         }
@@ -144,13 +152,23 @@ export default function AiDetect() {
       {analysisResult && (
         <View style={[
           styles.resultContainer, 
-          analysisResult.is_healthy ? styles.healthyResult : styles.unhealthyResult
+          analysisResult.status === 'uncertain' || analysisResult.confidence === 0 
+            ? styles.uncertainResult 
+            : analysisResult.is_healthy 
+              ? styles.healthyResult 
+              : styles.unhealthyResult
         ]}>
           <Text style={styles.resultText}>
-            {analysisResult.is_healthy ? '✅ Plante en bonne santé' : '⚠️ Plante malade'}
+            {analysisResult.status === 'uncertain' || analysisResult.confidence === 0 
+              ? '❓ Aucune plante trouvée' 
+              : analysisResult.is_healthy 
+                ? '✅ Plante en bonne santé' 
+                : '⚠️ Plante malade'}
           </Text>
           <Text style={styles.confidenceText}>
-            Confiance: {analysisResult.confidence_percentage}%
+            {analysisResult.status === 'uncertain' || analysisResult.confidence === 0 
+              ? 'Confiance: 0%' 
+              : `Confiance: ${analysisResult.confidence_percentage}%`}
           </Text>
         </View>
       )}
@@ -267,6 +285,9 @@ const styles = StyleSheet.create({
   },
   unhealthyResult: {
     backgroundColor: 'rgba(244, 67, 54, 0.9)',
+  },
+  uncertainResult: {
+    backgroundColor: 'rgba(158, 158, 158, 0.9)',
   },
   resultText: {
     color: 'white',
